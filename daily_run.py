@@ -24,8 +24,15 @@ def transform(data, transformer):
 
 
 if __name__ == '__main__':
-    
-    RUN_DATE = datetime(2021, 9, 5, tzinfo=timezone.utc)
+    import sys
+
+    # parse date from argv if it exists, otherwise current date
+    if len(sys.argv) > 1:
+        RUN_DATE = datetime.strptime(sys.argv[1], '%Y-%m-%d').replace(tzinfo=timezone.utc)
+    else:
+        RUN_DATE = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=timezone.utc)
+
+    print('Fetching data for', RUN_DATE.date())
 
     # get data
     kdata = extract_by_date('kdata', RUN_DATE)
