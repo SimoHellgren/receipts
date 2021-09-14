@@ -21,8 +21,6 @@ def transform(data, transformer):
         yield transformed, obj.e_tag
 
 
-
-
 if __name__ == '__main__':
     import sys
 
