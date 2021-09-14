@@ -24,7 +24,7 @@ def transform(data: dict):
     return {
         'receiptid': receiptid,
         'storeid': storeid,
-        'storename': chainlessname,
+        'storename': storename,
         'datetime': datetime,
         'total': total,
         'reprint': reprint,
