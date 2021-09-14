@@ -10,8 +10,11 @@ from typing import Callable
 import boto3
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.dialects.postgresql import insert
 
 from transform import kgroup, sgroup
+from models import Chain, Store, Receipt, Paymentmethod, Product, Receiptline
 
 load_dotenv()
 
@@ -50,56 +53,36 @@ def data_for_day(dt: datetime):
 
 engine = create_engine(os.environ['DB_URI'])
 
+Session = sessionmaker(bind=engine)
+
 dt = datetime(2021,9,14, tzinfo=timezone.utc)
 
-with engine.connect() as conn:
+with Session() as sqlsession: # namings should be improved when separating load to own module
     for d, etag in data_for_day(dt):
-        
-        # upsert chain
-        conn.execute(
-            '''insert into chain(id, name) values (%s, %s)
-                on conflict on constraint chain_pkey do nothing
-            ''',
-            (d['chainid'], d['chainname'])
-        )
+        chain_stmt = insert(Chain).values(id=d['chainid'], name=d['chainname']).on_conflict_do_nothing()
+        store_stmt = insert(Store).values(id=d['storeid'], name=d['storename'], chain_id=d['chainid']).on_conflict_do_nothing()
+        paymentmethod_stmt = insert(Paymentmethod).values(id=d['paymentmethod']).on_conflict_do_nothing()
+        receipt_stmt = insert(Receipt).values(id=d['receiptid'], reprint=d['reprint'], total=d['total'], etag=etag).on_conflict_do_nothing()
 
-        # upsert store
-        conn.execute(
-            '''insert into store(id, name, chain_id) values (%s, %s, %s)
-                on conflict on constraint store_pkey do nothing
-            ''',
-            (d['storeid'], d['storename'], d['chainid'])
-        )
 
-        # upsert paymentmethod
-        conn.execute(
-            '''insert into paymentmethod(id) values (%s)
-                on conflict on constraint paymentmethod_pkey do nothing
-            ''',
-            (d['paymentmethod'], )
-        )
+        sqlsession.execute(chain_stmt)
+        sqlsession.execute(store_stmt)
+        sqlsession.execute(paymentmethod_stmt)
+        sqlsession.execute(receipt_stmt)
 
-        # upsert receipt
-        conn.execute(
-            '''insert into receipt(id, reprint, total, etag) values (%s, %s, %s,%s)
-                on conflict on constraint receipt_pkey do nothing
-            ''', 
-                (d['receiptid'], d['reprint'], d['total'], etag)
-        )
-
-        # upsert receipt items and products
         for linenum, product_id, amount in d['items']:
-            conn.execute(
-                '''insert into product(id) values (%s)
-                    on conflict on constraint product_pkey do nothing
-                ''',
-                (product_id, )
-            )
+            product_stmt = insert(Product).values(id=product_id).on_conflict_do_nothing()
+            receiptline_stmt = insert(Receiptline).values(
+                receipt_id=d['receiptid'],
+                linenumber=linenum,
+                datetime=d['datetime'],
+                store_id=d['storeid'],
+                product_id=product_id,
+                paymentmethod_id=d['paymentmethod'],
+                amount=amount
+            ).on_conflict_do_nothing()
 
-            conn.execute(
-                '''insert into receiptline(receipt_id, linenumber, datetime, store_id, product_id, paymentmethod_id, amount)
-                    values (%s, %s, %s, %s, %s, %s, %s)
-                    on conflict on constraint receiptline_pkey do nothing
-                ''',
-                (d['receiptid'], linenum, d['datetime'], d['storeid'], product_id, d['paymentmethod'], amount)
-            )
+            sqlsession.execute(product_stmt)
+            sqlsession.execute(receiptline_stmt)
+
+    sqlsession.commit()
