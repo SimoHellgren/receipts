@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.postgresql import insert
 from dotenv import load_dotenv
 
-from models import Chain, Store, Receipt, Paymentmethod, Product, Receiptline
+from .models import Chain, Store, Receipt, Paymentmethod, Product, Receiptline
 
 
 def load(data):

@@ -4,9 +4,9 @@ from datetime import datetime, timezone
 from itertools import chain
 import json
 
-from extract import extract_by_date
-from transform import kgroup, sgroup
-from load import load
+from etl.extract import extract_by_date
+from etl.transform import kgroup, sgroup
+from etl.load import load
 
 
 def transform(data, transformer):
@@ -25,7 +25,7 @@ def transform(data, transformer):
 
 if __name__ == '__main__':
     
-    RUN_DATE = datetime(2021, 9, 13, tzinfo=timezone.utc)
+    RUN_DATE = datetime(2021, 9, 5, tzinfo=timezone.utc)
 
     # get data
     kdata = extract_by_date('kdata', RUN_DATE)
