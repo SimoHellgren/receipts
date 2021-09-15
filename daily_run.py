@@ -21,6 +21,18 @@ def transform(data, transformer):
         yield transformed, obj.e_tag
 
 
+def main(run_date: datetime):
+    print('Fetching data for', run_date.date())
+
+    # get data
+    kdata = extract_by_date('kdata', run_date)
+    sdata = extract_by_date('sdata', run_date)
+
+    transformed_kdata = transform(kdata, kgroup.transform)
+    transformed_sdata = transform(sdata, sgroup.transform)
+
+    load(chain(transformed_kdata, transformed_sdata))
+
 if __name__ == '__main__':
     import sys
 
@@ -30,13 +42,4 @@ if __name__ == '__main__':
     else:
         RUN_DATE = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=timezone.utc)
 
-    print('Fetching data for', RUN_DATE.date())
-
-    # get data
-    kdata = extract_by_date('kdata', RUN_DATE)
-    sdata = extract_by_date('sdata', RUN_DATE)
-
-    transformed_kdata = transform(kdata, kgroup.transform)
-    transformed_sdata = transform(sdata, sgroup.transform)
-
-    load(chain(transformed_kdata, transformed_sdata))
+    main(RUN_DATE)
