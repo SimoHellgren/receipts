@@ -9,18 +9,6 @@ from etl.transform import kgroup, sgroup
 from etl.load import load
 
 
-def transform(data, transformer):
-    '''Not sure if this should be in this module.
-
-        Also, this is coupled to S3, so maybe there shoud be clear contracts / interfaces in the pipeline
-    '''
-    # apply transformation, yield the result and ETag for the resource
-    for obj in data:
-        contents = obj.get()['Body']
-        transformed = transformer(json.load(contents))
-        yield transformed, obj.e_tag
-
-
 def main(run_date: datetime):
     print('Fetching data for', run_date.date())
 
@@ -28,8 +16,8 @@ def main(run_date: datetime):
     kdata = extract_by_date('kdata', run_date)
     sdata = extract_by_date('sdata', run_date)
 
-    transformed_kdata = transform(kdata, kgroup.transform)
-    transformed_sdata = transform(sdata, sgroup.transform)
+    transformed_kdata = map(kgroup.transform, kdata)
+    transformed_sdata = map(sgroup.transform, sdata)
 
     load(chain(transformed_kdata, transformed_sdata))
 

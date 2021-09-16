@@ -17,11 +17,11 @@ def load(data):
     Session = sessionmaker(bind=engine)
 
     with Session() as sqlsession: # namings should be improved when separating load to own module
-        for d, etag in data:
+        for d in data:
             chain_stmt = insert(Chain).values(id=d['chainid'], name=d['chainname']).on_conflict_do_nothing()
             store_stmt = insert(Store).values(id=d['storeid'], name=d['storename'], chain_id=d['chainid']).on_conflict_do_nothing()
             paymentmethod_stmt = insert(Paymentmethod).values(id=d['paymentmethod']).on_conflict_do_nothing()
-            receipt_stmt = insert(Receipt).values(id=d['receiptid'], reprint=d['reprint'], total=d['total'], etag=etag).on_conflict_do_nothing()
+            receipt_stmt = insert(Receipt).values(id=d['receiptid'], reprint=d['reprint'], total=d['total'], etag=d['etag']).on_conflict_do_nothing()
 
 
             sqlsession.execute(chain_stmt)

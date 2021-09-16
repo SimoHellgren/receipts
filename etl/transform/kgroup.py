@@ -1,9 +1,15 @@
 '''parse k group receipts'''
 
+import json
+
 from .common import extract_payment_method, extract_items
 
 
-def transform(data: dict):
+def transform(s3obj):
+    '''Transform an S3 ObjectSummary. Perhaps due a renaming and a typehint.'''
+
+    data = json.load(s3obj.get()['Body'])
+
     receiptid = data['id']
 
     storeid = data['businessUnit']['id']
@@ -31,5 +37,6 @@ def transform(data: dict):
         'chainid': chainid,
         'chainname': chainname,
         'paymentmethod': paymentmethod,
-        'items': items
+        'items': items,
+        'etag': s3obj.e_tag
     }
