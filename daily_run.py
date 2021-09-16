@@ -2,7 +2,6 @@
 
 from datetime import datetime, timezone
 from itertools import chain
-import json
 
 from etl.extract import extract_by_date
 from etl.transform import kgroup, sgroup
