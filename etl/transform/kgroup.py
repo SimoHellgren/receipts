@@ -2,41 +2,37 @@
 
 import json
 
-from .common import extract_payment_method, extract_items
+from .common import extract_payment_method, extract_items, ParsingResult
 
 
-def transform(s3obj):
+def transform(s3obj) -> ParsingResult:
     '''Transform an S3 ObjectSummary. Perhaps due a renaming and a typehint.'''
 
     data = json.load(s3obj.get()['Body'])
-
-    receiptid = data['id']
-
-    storeid = data['businessUnit']['id']
-    storename = data['businessUnit']['name']
-
-    datetime = data['transactionDateTime']
+    receipt_id = data['id']
     total = data['grandAmount']
     reprint = data['receiptReprint']
-    
-    chainid = data['businessUnit']['chainId']
-    chainlessname = data['businessUnit']['chainlessName']
-    chainname = storename.replace(chainlessname, '').strip()
+    datetime = data['transactionDateTime']
 
     paymentmethod = extract_payment_method(reprint)
-
     items = extract_items(reprint)
+    store_id = data['businessUnit']['id']
+    store_name = data['businessUnit']['name']
 
-    return {
-        'receiptid': receiptid,
-        'storeid': storeid,
-        'storename': storename,
-        'datetime': datetime,
-        'total': total,
-        'reprint': reprint,
-        'chainid': chainid,
-        'chainname': chainname,
-        'paymentmethod': paymentmethod,
-        'items': items,
-        'etag': s3obj.e_tag
-    }
+    chain_id = data['businessUnit']['chainId']
+    chainlessname = data['businessUnit']['chainlessName']
+    chain_name = store_name.replace(chainlessname, '').strip()
+
+    return ParsingResult(
+        receipt_id=receipt_id,
+        receipt_reprint=reprint,
+        receipt_total=total,
+        receipt_datetime=datetime,
+        receipt_paymentmethod=paymentmethod,
+        receipt_items=items,
+        store_id=store_id,
+        store_name=store_name,
+        chain_id=chain_id,
+        chain_name=chain_name,
+        etag=s3obj.e_tag
+    )

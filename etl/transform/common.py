@@ -2,8 +2,34 @@
 
 import re
 from itertools import takewhile
+from dataclasses import dataclass
+from typing import Iterable
 
-def extract_payment_method(reprint: str, default: str = 'CASH'):
+@dataclass
+class ReceiptItemLine:
+    '''An item line on a receipt'''
+    line_num: int
+    product: str
+    price: float
+
+
+@dataclass
+class ParsingResult:
+    '''A contract / interface between the Transform and Load steps'''
+    receipt_id: str
+    receipt_total: str
+    receipt_reprint: str
+    receipt_datetime: str
+    receipt_paymentmethod: str
+    receipt_items: Iterable[ReceiptItemLine] 
+    chain_id: str
+    chain_name: str
+    store_id: str
+    store_name: str
+    etag: str
+
+
+def extract_payment_method(reprint: str, default: str = 'CASH') -> str:
     ''' searches for patterns like **** **** **** 1234
         and returns the first one, or a default value
     '''
@@ -13,14 +39,14 @@ def extract_payment_method(reprint: str, default: str = 'CASH'):
     return next(iter(cards), default)
 
 
-def parse_price(price: str):
+def parse_price(price: str) -> float:
     if price.endswith('-'): # move negative sign to front
         price = f'-{price[:-1]}'
     
     return float(price.replace(',', '.'))
 
 
-def extract_items(reprint: str):
+def extract_items(reprint: str) -> Iterable[ReceiptItemLine]:
     '''Look for anything that ends in a price.
         Ignore total-looking rows
         Ignore rows starting with whitespace (K-group's discounts)
@@ -49,4 +75,4 @@ def extract_items(reprint: str):
     for i, item in no_ws_start:
         name, price, *_ = (e.strip() for e in re.split(price_pattern, item, re.I))
 
-        yield i, name, parse_price(price)
+        yield ReceiptItemLine(i, name, parse_price(price))
