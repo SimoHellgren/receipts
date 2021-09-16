@@ -19,7 +19,7 @@ def load(data: Iterable[ParsingResult]):
 
     Session = sessionmaker(bind=engine)
 
-    with Session() as sqlsession: # namings should be improved when separating load to own module
+    with Session() as session:
         for d in data:
             chain_stmt = insert(Chain).values(id=d.chain_id, name=d.chain_name).on_conflict_do_nothing()
             store_stmt = insert(Store).values(id=d.store_id, name=d.store_name, chain_id=d.store_id).on_conflict_do_nothing()
@@ -27,10 +27,10 @@ def load(data: Iterable[ParsingResult]):
             receipt_stmt = insert(Receipt).values(id=d.receipt_id, reprint=d.receipt_reprint, total=d.receipt_total, etag=d.etag).on_conflict_do_nothing()
 
 
-            sqlsession.execute(chain_stmt)
-            sqlsession.execute(store_stmt)
-            sqlsession.execute(paymentmethod_stmt)
-            sqlsession.execute(receipt_stmt)
+            session.execute(chain_stmt)
+            session.execute(store_stmt)
+            session.execute(paymentmethod_stmt)
+            session.execute(receipt_stmt)
 
             for item in d.receipt_items:
                 product_stmt = insert(Product).values(id=item.product).on_conflict_do_nothing()
@@ -44,7 +44,7 @@ def load(data: Iterable[ParsingResult]):
                     amount=item.price
                 ).on_conflict_do_nothing()
 
-                sqlsession.execute(product_stmt)
-                sqlsession.execute(receiptline_stmt)
+                session.execute(product_stmt)
+                session.execute(receiptline_stmt)
 
-        sqlsession.commit()
+        session.commit()
