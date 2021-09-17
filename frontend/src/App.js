@@ -48,11 +48,12 @@ const routes = [
 ]
 
 function App() {
+  const padding = {padding: 5}
   return (
     <Router>
     <div>
-      <Link to="/">Home</Link>
-      <Link to="/products">Products</Link>
+      <Link to="/" style={padding}>Home</Link>
+      <Link to="/products" style={padding}>Products</Link>
     </div>
     <div>
       <Switch>
