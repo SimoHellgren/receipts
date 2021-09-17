@@ -9,10 +9,20 @@ const get_one_receipt = () => {
 }
 
 const Receipt = ({receipt}) => {
-  
+  const [showReprint, setShowReprint] = useState(false)
+
+  const reprintStyle = {display: showReprint ? '' : 'none'}
+
+  const handleClick = () => {
+    setShowReprint(!showReprint)
+  }
+
   return (<div style={{whiteSpace: "break-spaces", fontFamily: "monospace"}}>
-    <h2>Result: {receipt.id}</h2>
-    <p>{receipt.reprint}</p>
+    <h3>Receipt ID: {receipt.id}</h3>
+    <p>Datetime: {receipt.datetime}</p>
+    <p>Total: {receipt.total}</p>
+    <button onClick={handleClick}>Show details</button>
+    <p style={reprintStyle}>{receipt.reprint}</p>
   </div>
   )
 }
