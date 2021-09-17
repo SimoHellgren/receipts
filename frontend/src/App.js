@@ -45,7 +45,7 @@ function App() {
 
 
   return <div>
-    {receipts.map(r => <Receipt receipt={r}/>)}
+    {receipts.map(r => <Receipt key={r.id} receipt={r}/>)}
   </div>
   
 }
