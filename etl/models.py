@@ -41,6 +41,9 @@ class Receipt(Base):
     reprint = Column(Text)
     total = Column(Numeric)
     etag = Column(Text)
+    datetime = Column(TIMESTAMP(timezone=True))
+    store_id = Column(Text, ForeignKey('store.id'))
+    paymentmethod_id = Column(Text, ForeignKey('paymentmethod.id'))
 
 
 class Receiptline(Base):

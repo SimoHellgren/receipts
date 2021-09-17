@@ -24,7 +24,15 @@ def load(data: Iterable[ParsingResult]):
             chain_stmt = insert(Chain).values(id=d.chain_id, name=d.chain_name).on_conflict_do_nothing()
             store_stmt = insert(Store).values(id=d.store_id, name=d.store_name, chain_id=d.store_id).on_conflict_do_nothing()
             paymentmethod_stmt = insert(Paymentmethod).values(id=d.receipt_paymentmethod).on_conflict_do_nothing()
-            receipt_stmt = insert(Receipt).values(id=d.receipt_id, reprint=d.receipt_reprint, total=d.receipt_total, etag=d.etag).on_conflict_do_nothing()
+            receipt_stmt = insert(Receipt).values(
+                id=d.receipt_id,
+                reprint=d.receipt_reprint,
+                total=d.receipt_total,
+                etag=d.etag,
+                datetime=d.receipt_datetime,
+                store_id=d.store_id,
+                paymentmethod_id=d.receipt_paymentmethod
+            ).on_conflict_do_nothing()
 
 
             session.execute(chain_stmt)
