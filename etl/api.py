@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
-from .models import Receipt
+from .models import Product, Receipt
 from .database import SessionLocal
 
 app = FastAPI()
@@ -24,6 +24,10 @@ def get_db():
 @app.get('/receipts')
 def get_receipts(db: Session = Depends(get_db)):
     return db.query(Receipt).all()
+
+@app.get('/products')
+def get_products(db: Session = Depends(get_db)):
+    return db.query(Product).all()
 
 
 @app.get('/')
