@@ -1,23 +1,16 @@
 '''Load data into a destination'''
 
-import os
 from typing import Iterable
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.postgresql import insert
-from dotenv import load_dotenv
 
 from etl.transform.common import ParsingResult
 from .models import Chain, Store, Receipt, Paymentmethod, Product, Receiptline
-
+from .database import sessionmaker
 
 def load(data: Iterable[ParsingResult]):
     '''Should maybe do a "load one"? I guess it's mostly a choice of letting the DB handle deduplication or not.'''
-    load_dotenv()
-    engine = create_engine(os.environ['DB_URI'])
 
-    Session = sessionmaker(bind=engine)
 
     with Session() as session:
         for d in data:
