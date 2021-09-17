@@ -1,13 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
 import Receipt from './components/Receipt'
-
-const APIRUL = 'http://localhost:8000/'
-
-const get_receipts = () => {
-  const request = axios.get(APIRUL + "receipts")
-  return request.then(r => r.data)
-}
+import receiptservice from './services/receipts'
 
 function App() {
   const [receipts, setReceipts] = useState([])
@@ -21,7 +14,7 @@ function App() {
   useEffect( () => {
     // filter out receipts where date has not been parsed, because null dates screw up order
     // I'll promise to handle the problem more elegantly later :)
-    get_receipts().then(r => setReceipts(r.filter(e => e.datetime !== null).sort(sortByDate).reverse()))
+    receiptservice.getAll().then(r => setReceipts(r.filter(e => e.datetime !== null).sort(sortByDate).reverse()))
   }, [])
 
 
