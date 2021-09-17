@@ -31,6 +31,13 @@ const ReceiptPage = () => {
   </div>
 }
 
+const ProductPage = () => {
+  const [products, setProducts] = useState([])
+
+  return (<div>This be product page</div>)
+
+}
+
 const routes = [
   {
     path: '/',
@@ -40,10 +47,10 @@ const routes = [
   },
 
   {
-    path: 'products',
+    path: '/products',
     exact: true,
-    meny: <div>Products</div>,
-    main: () => <h2>Product page</h2>
+    menu: <div>Products</div>,
+    main: () => <ProductPage/>
   }
 ]
 
