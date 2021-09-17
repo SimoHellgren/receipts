@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
+import Receipt from './components/Receipt'
 
 const APIRUL = 'http://localhost:8000/'
 
@@ -7,26 +8,6 @@ const get_receipts = () => {
   const request = axios.get(APIRUL + "receipts")
   return request.then(r => r.data)
 }
-
-const Receipt = ({receipt}) => {
-  const [showReprint, setShowReprint] = useState(false)
-
-  const reprintStyle = {display: showReprint ? '' : 'none'}
-
-  const handleClick = () => {
-    setShowReprint(!showReprint)
-  }
-
-  return (<div style={{whiteSpace: "break-spaces", fontFamily: "monospace"}}>
-    <h3>Receipt ID: {receipt.id}</h3>
-    <p>Datetime: {receipt.datetime}</p>
-    <p>Total: {receipt.total}</p>
-    <button onClick={handleClick}>Toggle details</button>
-    <p style={reprintStyle}>{receipt.reprint}</p>
-  </div>
-  )
-}
-
 
 function App() {
   const [receipts, setReceipts] = useState([])
