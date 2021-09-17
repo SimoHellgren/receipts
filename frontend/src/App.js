@@ -8,6 +8,7 @@ import {
 
 import Receipt from './components/Receipt'
 import receiptservice from './services/receipts'
+import productservice from './services/products'
 
 
 const ReceiptPage = () => {
@@ -34,7 +35,16 @@ const ReceiptPage = () => {
 const ProductPage = () => {
   const [products, setProducts] = useState([])
 
-  return (<div>This be product page</div>)
+  useEffect(() => {
+    productservice.getAll().then(p => setProducts(p))
+  })
+
+  return (
+    <div>
+      <h2>Products</h2>
+      {products.map(p => <p>{p.id}</p>)}
+    </div>
+  )
 
 }
 
