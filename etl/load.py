@@ -11,6 +11,7 @@ from .database import sessionmaker
 def load(data: Iterable[ParsingResult]):
     '''Should maybe do a "load one"? I guess it's mostly a choice of letting the DB handle deduplication or not.'''
 
+    Session = sessionmaker()
 
     with Session() as session:
         for d in data:
