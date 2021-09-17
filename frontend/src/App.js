@@ -3,9 +3,9 @@ import axios from 'axios'
 
 const APIRUL = 'http://localhost:8000/'
 
-const get_one_receipt = () => {
+const get_receipts = () => {
   const request = axios.get(APIRUL + "receipts")
-  return request.then(r => r.data[0])
+  return request.then(r => r.data)
 }
 
 const Receipt = ({receipt}) => {
@@ -21,7 +21,7 @@ const Receipt = ({receipt}) => {
     <h3>Receipt ID: {receipt.id}</h3>
     <p>Datetime: {receipt.datetime}</p>
     <p>Total: {receipt.total}</p>
-    <button onClick={handleClick}>Show details</button>
+    <button onClick={handleClick}>Toggle details</button>
     <p style={reprintStyle}>{receipt.reprint}</p>
   </div>
   )
@@ -29,13 +29,25 @@ const Receipt = ({receipt}) => {
 
 
 function App() {
-  const [receipt, setReceipt] = useState({})
+  const [receipts, setReceipts] = useState([])
+  
+  const sortByDate = (a,b) => {
+    if (a.datetime < b.datetime) return -1
+    if (a.datetime > b.datetime) return 1
+    return 0
+  }
 
   useEffect( () => {
-    get_one_receipt().then(r => setReceipt(r))
+    // filter out receipts where date has not been parsed, because null dates screw up order
+    // I'll promise to handle the problem more elegantly later :)
+    get_receipts().then(r => setReceipts(r.filter(e => e.datetime !== null).sort(sortByDate).reverse()))
   }, [])
 
-  return <Receipt receipt={receipt}/>
+
+  return <div>
+    {receipts.map(r => <Receipt receipt={r}/>)}
+  </div>
+  
 }
 
 export default App;
