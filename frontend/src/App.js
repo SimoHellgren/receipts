@@ -28,6 +28,7 @@ const ReceiptPage = () => {
   
   
   return <div>
+    <h2>Receipts</h2>
     {receipts.map(r => <Receipt key={r.id} receipt={r}/>)}
   </div>
 }
