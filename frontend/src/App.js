@@ -35,8 +35,6 @@ function App() {
     get_one_receipt().then(r => setReceipt(r))
   }, [])
 
-  console.log(receipt.reprint)
-
   return <Receipt receipt={receipt}/>
 }
 
