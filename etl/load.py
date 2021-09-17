@@ -6,14 +6,12 @@ from sqlalchemy.dialects.postgresql import insert
 
 from etl.transform.common import ParsingResult
 from .models import Chain, Store, Receipt, Paymentmethod, Product, Receiptline
-from .database import sessionmaker
+from .database import SessionLocal
 
 def load(data: Iterable[ParsingResult]):
     '''Should maybe do a "load one"? I guess it's mostly a choice of letting the DB handle deduplication or not.'''
 
-    Session = sessionmaker()
-
-    with Session() as session:
+    with SessionLocal() as session:
         for d in data:
             chain_stmt = insert(Chain).values(id=d.chain_id, name=d.chain_name).on_conflict_do_nothing()
             store_stmt = insert(Store).values(id=d.store_id, name=d.store_name, chain_id=d.store_id).on_conflict_do_nothing()
