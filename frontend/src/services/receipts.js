@@ -8,5 +8,10 @@ const getAll = () => {
   }
 
 
+const create = async newReceipt => {
+  const response = await axios.post(`${config.BASEURL}receipts/`, newReceipt)
+  return response.data
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll }
+export default { getAll, create }

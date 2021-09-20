@@ -75,6 +75,18 @@ const CreateReceiptPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+
+    const newReceipt = {
+      datetime: receiptDatetime.value,
+      store_id: receiptStore.value,
+      paymentmethod_id: recetipPaymentmethod.value,
+      total: receiptTotal.value
+    }
+
+    const result = receiptservice.create(newReceipt)
+
+    console.log(result)
+    
     resetReceiptDatetime()
     resetReceiptStore()
     resetReceiptTotal()
