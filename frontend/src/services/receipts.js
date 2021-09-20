@@ -4,8 +4,8 @@ const config = require('./common.json')
 const path = `${config.BASEURL}/receipts`
 
 const getAll = () => {
-    const request = axios.get(path)
-    return request.then(r => r.data)
+    const response = axios.get(path)
+    return response.then(r => r.data)
   }
 
 
