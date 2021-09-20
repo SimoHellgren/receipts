@@ -135,7 +135,7 @@ function App() {
     <div>
       <Link to="/" style={padding}>Home</Link>
       <Link to="/products" style={padding}>Products</Link>
-      <Link to="/receipts/create" style={padding}>Add Receipt</Link>
+      <Link to="/receipts/create" style={padding}>Create Receipt</Link>
     </div>
     <div>
       <Switch>
