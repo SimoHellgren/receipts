@@ -10,6 +10,24 @@ import Receipt from './components/Receipt'
 import receiptservice from './services/receipts'
 import productservice from './services/products'
 
+const useField = (type, initValue) => {
+  const [value, setValue] = useState(initValue)
+
+  const onChange = (event) => {
+    setValue(event.target.value)
+  }
+
+  const reset = () => setValue(initValue)
+
+
+  return {
+    type,
+    value,
+    onChange,
+    reset
+  }
+}
+
 
 const ReceiptPage = () => {
   const [receipts, setReceipts] = useState([])
@@ -49,6 +67,35 @@ const ProductPage = () => {
 
 }
 
+const CreateReceiptPage = () => {
+  const {reset: resetReceiptDatetime, ...receiptDatetime} = useField('datetime-local', '')
+  const {reset: resetReceiptStore, ...receiptStore} = useField('text', '')
+  const {reset: resetReceiptTotal, ...receiptTotal} = useField('number', 0)
+  const {reset: resetReceiptPaymentmethod, ...recetipPaymentmethod} = useField('text', '')
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    resetReceiptDatetime()
+    resetReceiptStore()
+    resetReceiptTotal()
+    resetReceiptPaymentmethod()
+  }
+
+  return (<div>
+    <h2>Create Receipt</h2>
+    <form onSubmit={handleSubmit}>
+      
+      <div>Datetime: <input {...receiptDatetime}/></div>
+      <div>Store: <input {...receiptStore}/> </div>
+      <div>Total: <input {...receiptTotal}/></div>
+      <div>Payment method: <input {...recetipPaymentmethod}/></div>
+
+      <input type="submit" value="Submit"/>
+    </form>
+    </div>)
+}
+
+
 const routes = [
   {
     path: '/',
@@ -62,6 +109,13 @@ const routes = [
     exact: true,
     menu: <div>Products</div>,
     main: () => <ProductPage/>
+  },
+
+  {
+    path: '/receipts/create',
+    exact: true,
+    menu: <div>Add receipt</div>,
+    main: () => <CreateReceiptPage/>
   }
 ]
 
@@ -72,6 +126,7 @@ function App() {
     <div>
       <Link to="/" style={padding}>Home</Link>
       <Link to="/products" style={padding}>Products</Link>
+      <Link to="/receipts/create" style={padding}>Add Receipt</Link>
     </div>
     <div>
       <Switch>
