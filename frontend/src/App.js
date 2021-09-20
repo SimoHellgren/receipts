@@ -85,7 +85,7 @@ const CreateReceiptPage = () => {
   const {reset: resetReceiptDatetime, ...receiptDatetime} = useField('datetime-local', '')
   const {reset: resetReceiptStore, ...receiptStore} = useField('text', '')
   const {reset: resetReceiptTotal, ...receiptTotal} = useField('number', 0)
-  const {reset: resetReceiptPaymentmethod, ...recetipPaymentmethod} = useField('text', '')
+  const {reset: resetReceiptPaymentmethod, ...receiptPaymentmethod} = useField('text', '')
 
   const [products, setProducts] = useState([])
 
@@ -97,7 +97,7 @@ const CreateReceiptPage = () => {
     const newReceipt = {
       datetime: receiptDatetime.value,
       store_id: receiptStore.value,
-      paymentmethod_id: recetipPaymentmethod.value,
+      paymentmethod_id: receiptPaymentmethod.value,
       total: receiptTotal.value
     }
 
@@ -118,7 +118,7 @@ const CreateReceiptPage = () => {
       <div>Datetime: <input {...receiptDatetime}/></div>
       <div>Store: <input {...receiptStore}/> </div>
       <div>Total: <input {...receiptTotal}/></div>
-      <div>Payment method: <input {...recetipPaymentmethod}/></div>
+      <div>Payment method: <input {...receiptPaymentmethod}/></div>
       <div style={showProductHeader}>Products:</div>
       {products}
       <button type="button" onClick={()=> setProducts(products.concat(<AddProduct key={products.length + 1}/>))}>Add product</button>
