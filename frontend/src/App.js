@@ -67,11 +67,29 @@ const ProductPage = () => {
 
 }
 
+/**
+ * A component for adding an individual product onto a receipt
+ */
+const AddProduct = () => {
+  
+  const {reset: resetProduct, ...product} = useField('text', '')
+  const {reset: resetPrice, ...price} = useField('number', 0)
+
+  return (<div>
+    product: <input {...product}/> price: <input {...price}/>
+  </div>)
+
+}
+
 const CreateReceiptPage = () => {
   const {reset: resetReceiptDatetime, ...receiptDatetime} = useField('datetime-local', '')
   const {reset: resetReceiptStore, ...receiptStore} = useField('text', '')
   const {reset: resetReceiptTotal, ...receiptTotal} = useField('number', 0)
   const {reset: resetReceiptPaymentmethod, ...recetipPaymentmethod} = useField('text', '')
+
+  const [products, setProducts] = useState([])
+
+  const showProductHeader = {display: products.length > 0 ? '' : 'none'}
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -101,7 +119,9 @@ const CreateReceiptPage = () => {
       <div>Store: <input {...receiptStore}/> </div>
       <div>Total: <input {...receiptTotal}/></div>
       <div>Payment method: <input {...recetipPaymentmethod}/></div>
-
+      <div style={showProductHeader}>Products:</div>
+      {products}
+      <button type="button" onClick={()=> setProducts(products.concat(<AddProduct key={products.length + 1}/>))}>Add product</button>
       <input type="submit" value="Submit"/>
     </form>
     </div>)
