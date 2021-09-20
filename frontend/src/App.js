@@ -86,7 +86,7 @@ const CreateReceiptPage = () => {
     const result = receiptservice.create(newReceipt)
 
     console.log(result)
-    
+
     resetReceiptDatetime()
     resetReceiptStore()
     resetReceiptTotal()
@@ -112,21 +112,18 @@ const routes = [
   {
     path: '/',
     exact: true,
-    menu: <div>Home</div>,
     main: () => <ReceiptPage/>
   },
 
   {
     path: '/products',
     exact: true,
-    menu: <div>Products</div>,
     main: () => <ProductPage/>
   },
 
   {
     path: '/receipts/create',
     exact: true,
-    menu: <div>Add receipt</div>,
     main: () => <CreateReceiptPage/>
   }
 ]
