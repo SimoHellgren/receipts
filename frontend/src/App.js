@@ -61,7 +61,7 @@ const ProductPage = () => {
   return (
     <div>
       <h2>Products</h2>
-      {products.map(p => <p>{p.name} / {p.id}</p>)}
+      {products.map(p => <p key={p.id}>{p.name} / {p.id}</p>)}
     </div>
   )
 
