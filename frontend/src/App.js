@@ -56,7 +56,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     productservice.getAll().then(p => setProducts(p))
-  })
+  }, [])
 
   return (
     <div>
