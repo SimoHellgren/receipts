@@ -1,7 +1,7 @@
 import axios from 'axios'
 const config = require('./common.json')
 
-const path = `${config.BASEURL}/receipts`
+const path = `${config.BASEURL}/products`
 
 const getAll = () => {
     const response = axios.get(path)
