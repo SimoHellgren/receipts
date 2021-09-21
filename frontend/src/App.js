@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
@@ -70,15 +70,11 @@ const ProductPage = () => {
 /**
  * A component for adding an individual product onto a receipt
  */
-const AddProduct = () => {
-  
-  const {reset: resetProduct, ...product} = useField('text', '')
-  const {reset: resetPrice, ...price} = useField('number', 0)
-
+const ProductInput = ({data: [product, onChange]}) => {
   return (<div>
-    product: <input {...product}/> price: <input {...price}/>
+    <label>name: </label><input type="text" name="name" value={product.name} onChange={onChange}/>
+    <label>price: </label><input type="text" name="price" value={product.price} onChange={onChange}/>
   </div>)
-
 }
 
 const CreateReceiptPage = () => {
@@ -87,9 +83,20 @@ const CreateReceiptPage = () => {
   const {reset: resetReceiptTotal, ...receiptTotal} = useField('number', 0)
   const {reset: resetReceiptPaymentmethod, ...receiptPaymentmethod} = useField('text', '')
 
-  const [products, setProducts] = useState([])
+  const emptyProduct = {name: "", price: 0}
+  const [products, setProducts] = useState([emptyProduct])
 
-  const showProductHeader = {display: products.length > 0 ? '' : 'none'}
+
+  const addProduct = () => {
+    setProducts([...products, {...emptyProduct}])
+  }
+  
+  const handleChange = (index, event) => {
+    let newProducts = [...products]
+    newProducts[index][event.target.name] = event.target.value
+  
+    setProducts(newProducts)
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -109,6 +116,7 @@ const CreateReceiptPage = () => {
     resetReceiptStore()
     resetReceiptTotal()
     resetReceiptPaymentmethod()
+    setProducts([{...emptyProduct}])
   }
 
   return (<div>
@@ -119,11 +127,17 @@ const CreateReceiptPage = () => {
       <div>Store: <input {...receiptStore}/> </div>
       <div>Total: <input {...receiptTotal}/></div>
       <div>Payment method: <input {...receiptPaymentmethod}/></div>
-      <div style={showProductHeader}>Products:</div>
-      {products}
-      <button type="button" onClick={()=> setProducts(products.concat(<AddProduct key={products.length + 1}/>))}>Add product</button>
+
+      <h3>Products:</h3>
+      <button type="button" onClick={addProduct}>Add product</button>
+      {products.map((p, i) => (
+        <ProductInput key={i} data={[p, e => handleChange(i,e)]}/>
+      ))}
+
+      <div></div>
       <input type="submit" value="Submit"/>
     </form>
+
     </div>)
 }
 
