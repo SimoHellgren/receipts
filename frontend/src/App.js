@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useField } from './hooks'
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,24 +10,6 @@ import {
 import Receipt from './components/Receipt'
 import receiptservice from './services/receipts'
 import productservice from './services/products'
-
-const useField = (type, initValue) => {
-  const [value, setValue] = useState(initValue)
-
-  const onChange = (event) => {
-    setValue(event.target.value)
-  }
-
-  const reset = () => setValue(initValue)
-
-
-  return {
-    type,
-    value,
-    onChange,
-    reset
-  }
-}
 
 
 const ReceiptPage = () => {
