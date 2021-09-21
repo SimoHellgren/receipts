@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useField } from './hooks'
 import {
   BrowserRouter as Router,
@@ -8,25 +8,10 @@ import {
 } from 'react-router-dom'
 
 import ReceiptsPage from './ReceiptsPage'
+import ProductsPage from './ProductsPage'
 
 import receiptservice from './services/receipts'
-import productservice from './services/products'
 
-const ProductPage = () => {
-  const [products, setProducts] = useState([])
-
-  useEffect(() => {
-    productservice.getAll().then(p => setProducts(p))
-  }, [])
-
-  return (
-    <div>
-      <h2>Products</h2>
-      {products.map(p => <p key={p.id}>{p.name} / {p.id}</p>)}
-    </div>
-  )
-
-}
 
 /**
  * A component for adding an individual product onto a receipt
@@ -113,7 +98,7 @@ const routes = [
   {
     path: '/products',
     exact: true,
-    main: () => <ProductPage/>
+    main: () => <ProductsPage/>
   },
 
   {
