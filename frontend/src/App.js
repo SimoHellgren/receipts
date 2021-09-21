@@ -7,32 +7,10 @@ import {
   Link
 } from 'react-router-dom'
 
-import Receipt from './components/Receipt'
+import ReceiptsPage from './ReceiptsPage'
+
 import receiptservice from './services/receipts'
 import productservice from './services/products'
-
-
-const ReceiptPage = () => {
-  const [receipts, setReceipts] = useState([])
-  
-  const sortByDate = (a,b) => {
-    if (a.datetime < b.datetime) return -1
-    if (a.datetime > b.datetime) return 1
-    return 0
-  }
-  
-  useEffect( () => {
-    // filter out receipts where date has not been parsed, because null dates screw up order
-    // I'll promise to handle the problem more elegantly later :)
-    receiptservice.getAll().then(r => setReceipts(r.filter(e => e.datetime !== null).sort(sortByDate).reverse()))
-  }, [])
-  
-  
-  return <div>
-    <h2>Receipts</h2>
-    {receipts.map(r => <Receipt key={r.id} receipt={r}/>)}
-  </div>
-}
 
 const ProductPage = () => {
   const [products, setProducts] = useState([])
@@ -129,7 +107,7 @@ const routes = [
   {
     path: '/',
     exact: true,
-    main: () => <ReceiptPage/>
+    main: () => <ReceiptsPage/>
   },
 
   {
