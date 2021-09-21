@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from . import schemas
 from . import models
-from .database import SessionLocal
+from .dependencies import get_db
 
 app = FastAPI()
 
@@ -13,13 +13,6 @@ app.add_middleware(
     allow_origins='*',
     allow_methods=['*']
 )
-
-def get_db():
-    db = SessionLocal()
-    try: 
-        yield db
-    finally:
-        db.close()
 
 
 @app.get('/receipts')
