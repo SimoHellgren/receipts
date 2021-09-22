@@ -45,9 +45,6 @@ class ReceiptlineBase(BaseModel):
 
 class Receiptline(ReceiptlineBase):
     receipt_id: str
-    datetime: datetime
-    store_id: str
-    paymentmethod_id: str
 
     class Config:
         orm_mode = True
