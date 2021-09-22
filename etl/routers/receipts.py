@@ -65,6 +65,7 @@ def get_receipt_lines(receipt_id: str, db: Session = Depends(get_db)):
 
     return db_receiptlines
 
+
 @router.post('/{receipt_id}/lines')
 def create_receipt_lines(receipt_id: str, lines: List[schemas.ReceiptlineCreate], db: Session = Depends(get_db)):
     db_receiptlines = [
