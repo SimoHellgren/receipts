@@ -64,3 +64,33 @@ def get_receipt_lines(receipt_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Receipt lines not found')
 
     return db_receiptlines
+
+@router.post('/{receipt_id}/lines')
+def create_receipt_lines(receipt_id: str, lines: List[schemas.ReceiptlineCreate], db: Session = Depends(get_db)):
+    # get receipt from db to get store etc. This is pretty silly, as it's only done because the DB has a DW-flavor to it.
+    # If the DB was more application-like, this step should be unnecessary
+    db_receipt = get_receipt(receipt_id, db)
+
+    db_receiptlines = [
+        models.Receiptline(
+            linenumber=line.linenumber,
+            product_id=line.product_id,
+            amount=line.amount,
+
+            receipt_id=receipt_id,
+            datetime=db_receipt.datetime,
+            store_id=db_receipt.store_id,
+            paymentmethod_id=db_receipt.paymentmethod_id
+        )
+        for line in lines
+    ]
+
+    print(db_receiptlines)
+
+    db.add_all(db_receiptlines)
+    db.commit()
+    
+    for line in db_receiptlines:
+        db.refresh(line)
+
+    return db_receiptlines

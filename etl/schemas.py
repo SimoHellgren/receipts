@@ -37,14 +37,20 @@ class ProductCreate(ProductBase):
     pass
 
 
-class Receiptline(BaseModel):
-    receipt_id: str
+class ReceiptlineBase(BaseModel):
     linenumber: int
+    product_id: str
+    amount: float
+
+
+class Receiptline(ReceiptlineBase):
+    receipt_id: str
     datetime: datetime
     store_id: str
-    product_id: str
     paymentmethod_id: str
-    amount: float
 
     class Config:
         orm_mode = True
+
+class ReceiptlineCreate(ReceiptlineBase):
+    pass
