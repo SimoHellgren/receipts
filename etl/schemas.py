@@ -1,7 +1,6 @@
 '''pydantic models for fastapi'''
 from datetime import datetime
 
-
 from pydantic import BaseModel
 
 class ReceiptBase(BaseModel):
@@ -36,3 +35,16 @@ class Product(ProductBase):
 
 class ProductCreate(ProductBase):
     pass
+
+
+class Receiptline(BaseModel):
+    receipt_id: str
+    linenumber: int
+    datetime: datetime
+    store_id: str
+    product_id: str
+    paymentmethod_id: str
+    amount: float
+
+    class Config:
+        orm_mode = True
