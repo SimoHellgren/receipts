@@ -44,11 +44,24 @@ import receiptservice from './services/receipts'
         paymentmethod_id: receiptPaymentmethod.value,
         total: receiptTotal.value
       }
+      
+      
+      const newReceiptLines = products.map((p,i) => {
+        const item = {
+          linenumber: i+1, // start linenumbers from 1 
+          product_id: p.name,
+          amount: p.price
+        }
+        return item
+      })
+      
+      const receipt = receiptservice.create(newReceipt)
+    
+      receipt.then(r => {
+        receiptservice.create_receiptlines(r.id, newReceiptLines)
+      })
   
-      const result = receiptservice.create(newReceipt)
-  
-      console.log(result)
-  
+
       resetReceiptDatetime()
       resetReceiptStore()
       resetReceiptTotal()

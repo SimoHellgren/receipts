@@ -14,5 +14,10 @@ const create = async newReceipt => {
   return response.data
 }
 
+const create_receiptlines = async (receipt_id, lines) => {
+  const response = await axios.post(`${path}/${receipt_id}/lines`, lines)
+  return response.data
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create }
+export default { getAll, create, create_receiptlines }
