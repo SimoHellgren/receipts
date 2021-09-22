@@ -37,10 +37,7 @@ def load(data: Iterable[ParsingResult]):
                 receiptline_stmt = insert(Receiptline).values(
                     receipt_id=d.receipt_id,
                     linenumber=item.line_num,
-                    datetime=d.receipt_datetime,
-                    store_id=d.store_id,
                     product_id=item.product,
-                    paymentmethod_id=d.receipt_paymentmethod,
                     amount=item.price
                 ).on_conflict_do_nothing()
 
