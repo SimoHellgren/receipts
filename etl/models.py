@@ -51,8 +51,5 @@ class Receiptline(Base):
 
     receipt_id = Column(Text, ForeignKey('receipt.id'), primary_key=True)
     linenumber = Column(Integer, primary_key=True)
-    datetime = Column(TIMESTAMP(timezone=True))
-    store_id = Column(Text, ForeignKey('store.id'))
     product_id = Column(Text, ForeignKey('product.id'))
-    paymentmethod_id = Column(Text, ForeignKey('paymentmethod.id'))
     amount = Column(Numeric)
