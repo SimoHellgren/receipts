@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, status
 from fastapi.exceptions import HTTPException
 from sqlalchemy.orm import Session
@@ -50,3 +52,15 @@ def create_receipt(receipt: schemas.ReceiptCreate, db: Session = Depends(get_db)
     db.commit()
     db.refresh(db_receipt)
     return db_receipt
+
+
+@router.get('/{receipt_id}/lines', response_model=List[schemas.Receiptline])
+def get_receipt_lines(receipt_id: str, db: Session = Depends(get_db)):
+    db_receiptlines = db.query(models.Receiptline).filter(
+        models.Receiptline.receipt_id == receipt_id
+    ).order_by(models.Receiptline.linenumber).all()
+
+    if not db_receiptlines:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Receipt lines not found')
+
+    return db_receiptlines
