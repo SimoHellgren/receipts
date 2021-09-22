@@ -35,7 +35,7 @@ import receiptservice from './services/receipts'
       setProducts(newProducts)
     }
   
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
       event.preventDefault()
   
       const newReceipt = {
@@ -55,12 +55,12 @@ import receiptservice from './services/receipts'
         return item
       })
       
-      const receipt = receiptservice.create(newReceipt)
+      const receipt = await receiptservice.create(newReceipt)
     
-      receipt.then(r => {
-        receiptservice.create_receiptlines(r.id, newReceiptLines)
-      })
+      const receiptlines = await receiptservice.create_receiptlines(receipt.id, newReceiptLines)
   
+      console.log(receipt)
+      console.log(receiptlines)
 
       resetReceiptDatetime()
       resetReceiptStore()
