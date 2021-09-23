@@ -8,12 +8,12 @@ class ReceiptBase(BaseModel):
     store_id: str
     paymentmethod_id: str
     total: float
-
-
-class Receipt(ReceiptBase):
     id: str
     reprint: str
     etag: str
+
+
+class Receipt(ReceiptBase):
 
     class Config:
         orm_mode = True
@@ -27,11 +27,13 @@ class ReceiptCreate(ReceiptBase):
 class ProductBase(BaseModel):
     id: str
 
+
 class Product(ProductBase):
     name: str
 
     class Config:
         orm_mode = True
+
 
 class ProductCreate(ProductBase):
     pass
@@ -49,6 +51,7 @@ class Receiptline(ReceiptlineBase):
     class Config:
         orm_mode = True
 
+
 class ReceiptlineCreate(ReceiptlineBase):
     pass
 
@@ -63,12 +66,12 @@ class Chain(BaseModel):
 
 
 class StoreBase(BaseModel):
+    id: str
     name: str
     chain_id: str
 
 
 class Store(StoreBase):
-    id: str
 
     class Config:
         orm_mode = True

@@ -30,19 +30,10 @@ def get_receipt(receipt_id: str, db: Session = Depends(get_db)):
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
 def create_receipt(receipt: schemas.ReceiptCreate, db: Session = Depends(get_db)):
-    id = 'testreceipt'
-    reprintlines = [
-        'This is a custom made receipt',
-        "It doesn't really have a reprint,",
-        "but here we are anyways.",
-        "",
-        "Bye!"
-    ]
     db_receipt = models.Receipt(
-        id=id,
-        reprint='\n'.join(l.center(42) for l in reprintlines),
+        id=receipt.id,
         total=receipt.total,
-        etag=None,
+        etag=receipt.reprint,
         datetime=receipt.datetime,
         store_id=receipt.store_id,
         paymentmethod_id=receipt.paymentmethod_id

@@ -1,47 +1,44 @@
 '''Load data into a destination'''
 
+import os
+import requests
 from typing import Iterable
 
-from sqlalchemy.dialects.postgresql import insert
+from dotenv import load_dotenv
 
 from etl.transform.common import ParsingResult
-from .models import Chain, Store, Receipt, Paymentmethod, Product, Receiptline
-from .database import SessionLocal
+
+load_dotenv()
+
+def post(endpoint: str, data: dict):
+    baseurl = os.environ['API_URL']
+    return requests.post(baseurl+endpoint, json=data)
+
 
 def load(data: Iterable[ParsingResult]):
-    '''Should maybe do a "load one"? I guess it's mostly a choice of letting the DB handle deduplication or not.'''
+    '''Most of these should probably be PUT'''
+    for d in data:
+        if d.receipt_id != 'kpoK651-2580-4-2021-09-23T18:16:57': continue
 
-    with SessionLocal() as session:
-        for d in data:
-            chain_stmt = insert(Chain).values(id=d.chain_id, name=d.chain_name).on_conflict_do_nothing()
-            store_stmt = insert(Store).values(id=d.store_id, name=d.store_name, chain_id=d.store_id).on_conflict_do_nothing()
-            paymentmethod_stmt = insert(Paymentmethod).values(id=d.receipt_paymentmethod).on_conflict_do_nothing()
-            receipt_stmt = insert(Receipt).values(
-                id=d.receipt_id,
-                reprint=d.receipt_reprint,
-                total=d.receipt_total,
-                etag=d.etag,
-                datetime=d.receipt_datetime,
-                store_id=d.store_id,
-                paymentmethod_id=d.receipt_paymentmethod
-            ).on_conflict_do_nothing()
+        chain = post('/chains', {'id': d.chain_id, 'name': d.chain_name})
+        store = post('/stores', {'id': d.store_id, 'name': d.store_id, 'chain': d.chain_id})
+        paymentmethod = post('/paymentmethods', {'id': d.receipt_paymentmethod, 'payer': None})
+        receipt = post(
+            '/receipts',
+            {
+                'id': d.receipt_id,
+                'datetime': d.receipt_datetime,
+                'paymentmethod_id': d.receipt_paymentmethod,
+                'total': d.receipt_total,
+                'reprint': d.receipt_reprint,
+                'etag': d.etag,
+                'store_id': d.store_id
+            }
+        )
 
+        lines = []
+        for line in d.receipt_items:
+            post('/products', {'id': line.product})
+            lines.append({'linenumber': line.line_num, 'product_id': line.product, 'amount': line.price})
 
-            session.execute(chain_stmt)
-            session.execute(store_stmt)
-            session.execute(paymentmethod_stmt)
-            session.execute(receipt_stmt)
-
-            for item in d.receipt_items:
-                product_stmt = insert(Product).values(id=item.product).on_conflict_do_nothing()
-                receiptline_stmt = insert(Receiptline).values(
-                    receipt_id=d.receipt_id,
-                    linenumber=item.line_num,
-                    product_id=item.product,
-                    amount=item.price
-                ).on_conflict_do_nothing()
-
-                session.execute(product_stmt)
-                session.execute(receiptline_stmt)
-
-        session.commit()
+        items = post(f'/receipts/{d.receipt_id}/lines', lines)
