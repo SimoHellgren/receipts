@@ -34,10 +34,11 @@ def create_receipt(receipt: schemas.ReceiptCreate, db: Session = Depends(get_db)
     db_receipt = models.Receipt(
         id=receipt.id,
         total=receipt.total,
-        etag=receipt.reprint,
+        etag=receipt.etag,
         datetime=receipt.datetime,
         store_id=receipt.store_id,
-        paymentmethod_id=receipt.paymentmethod_id
+        paymentmethod_id=receipt.paymentmethod_id,
+        reprint=receipt.reprint
     )
 
     db.add(db_receipt)
