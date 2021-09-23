@@ -18,8 +18,6 @@ def post(endpoint: str, data: dict):
 def load(data: Iterable[ParsingResult]):
     '''Most of these should probably be PUT'''
     for d in data:
-        if d.receipt_id != 'kpoK651-2580-4-2021-09-23T18:16:57': continue
-
         chain = post('/chains', {'id': d.chain_id, 'name': d.chain_name})
         store = post('/stores', {'id': d.store_id, 'name': d.store_id, 'chain': d.chain_id})
         paymentmethod = post('/paymentmethods', {'id': d.receipt_paymentmethod, 'payer': None})
