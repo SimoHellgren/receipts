@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import receipts, products
+from .routers import receipts, products, stores
 
 app = FastAPI()
 
@@ -13,6 +13,7 @@ app.add_middleware(
 
 app.include_router(receipts.router)
 app.include_router(products.router)
+app.include_router(stores.router)
 
 @app.get('/')
 def root():
