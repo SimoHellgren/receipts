@@ -76,3 +76,8 @@ class Store(StoreBase):
 
 class StoreCreate(StoreBase):
     pass
+
+
+class Paymentmethod(BaseModel):
+    id: str
+    payer: str
