@@ -19,7 +19,6 @@ class Receipt(ReceiptBase):
         orm_mode = True
 
 
-
 class ReceiptCreate(ReceiptBase):
     pass
 

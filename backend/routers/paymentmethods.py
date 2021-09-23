@@ -5,6 +5,7 @@ from ..dependencies import get_db
 from .. import models
 from .. import schemas
 
+
 router = APIRouter(
     prefix='/paymentmethods',
     tags=['Paymentmethods']
@@ -13,6 +14,7 @@ router = APIRouter(
 @router.get('/')
 def get_paymentmethods(db: Session = Depends(get_db)):
     return db.query(models.Paymentmethod).all()
+
 
 @router.post('/')
 def create_paymentmethod(paymentmethod: schemas.Paymentmethod, db: Session = Depends(get_db)):

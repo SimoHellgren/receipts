@@ -8,6 +8,7 @@ from ..dependencies import get_db
 from .. import models
 from .. import schemas
 
+
 router = APIRouter(
     prefix='/receipts',
     tags=['Receipts']
