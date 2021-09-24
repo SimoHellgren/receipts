@@ -5,7 +5,7 @@ from fastapi.exceptions import HTTPException
 from sqlalchemy.orm import Session
 
 from ..dependencies import get_db
-from .. import models
+from .. import crud
 from .. import schemas
 
 
@@ -16,12 +16,12 @@ router = APIRouter(
 
 @router.get('/')
 def get_receipts(db: Session = Depends(get_db)):
-    return db.query(models.Receipt).all()
+    return crud.get_receipts(db)
 
 
 @router.get('/{receipt_id}')
 def get_receipt(receipt_id: str, db: Session = Depends(get_db)):
-    db_receipt = db.query(models.Receipt).get(receipt_id)
+    db_receipt = crud.get_receipt(db, receipt_id)
     
     if not db_receipt:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Receipt not found')
@@ -31,27 +31,12 @@ def get_receipt(receipt_id: str, db: Session = Depends(get_db)):
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
 def create_receipt(receipt: schemas.ReceiptCreate, db: Session = Depends(get_db)):
-    db_receipt = models.Receipt(
-        id=receipt.id,
-        total=receipt.total,
-        etag=receipt.etag,
-        datetime=receipt.datetime,
-        store_id=receipt.store_id,
-        paymentmethod_id=receipt.paymentmethod_id,
-        reprint=receipt.reprint
-    )
-
-    db.add(db_receipt)
-    db.commit()
-    db.refresh(db_receipt)
-    return db_receipt
+    return crud.create_receipt(db, receipt)
 
 
 @router.get('/{receipt_id}/lines', response_model=List[schemas.Receiptline])
 def get_receipt_lines(receipt_id: str, db: Session = Depends(get_db)):
-    db_receiptlines = db.query(models.Receiptline).filter(
-        models.Receiptline.receipt_id == receipt_id
-    ).order_by(models.Receiptline.linenumber).all()
+    db_receiptlines = crud.get_receiptlines(db, receipt_id)
 
     if not db_receiptlines:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Receipt lines not found')
@@ -61,22 +46,4 @@ def get_receipt_lines(receipt_id: str, db: Session = Depends(get_db)):
 
 @router.post('/{receipt_id}/lines')
 def create_receipt_lines(receipt_id: str, lines: List[schemas.ReceiptlineCreate], db: Session = Depends(get_db)):
-    db_receiptlines = [
-        models.Receiptline(
-            receipt_id=receipt_id,
-            linenumber=line.linenumber,
-            product_id=line.product_id,
-            amount=line.amount
-        )
-        for line in lines
-    ]
-
-    print(db_receiptlines)
-
-    db.add_all(db_receiptlines)
-    db.commit()
-    
-    for line in db_receiptlines:
-        db.refresh(line)
-
-    return db_receiptlines
+    return crud.create_receiptlines(db, receipt_id, lines)
