@@ -35,3 +35,20 @@ def create_store(db: Session, store: schemas.StoreCreate):
     db.refresh(db_store)
 
     return db_store
+
+
+def get_paymentmethods(db: Session):
+    return db.query(models.Paymentmethod).all()
+
+
+def create_paymentmethod(db: Session, paymentmethod: schemas.Paymentmethod):
+    db_paymentmethod = models.Paymentmethod(
+        id=paymentmethod.id,
+        payer=paymentmethod.payer
+    )
+
+    db.add(db_paymentmethod)
+    db.commit()
+    db.refresh(db_paymentmethod)
+
+    return db_paymentmethod
