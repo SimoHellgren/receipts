@@ -52,3 +52,19 @@ def create_paymentmethod(db: Session, paymentmethod: schemas.Paymentmethod):
     db.refresh(db_paymentmethod)
 
     return db_paymentmethod
+
+def get_products(db: Session):
+    return db.query(models.Product).all()
+
+
+def create_product(db: Session, product: schemas.ProductCreate):
+    db_product=models.Product(
+        id=product.id,
+        name=None
+    )
+
+    db.add(db_product)
+    db.commit()
+    db.refresh(db_product)
+
+    return db_product
