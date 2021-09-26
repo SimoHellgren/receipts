@@ -63,8 +63,8 @@ def test_paymentmethod():
     return models.Paymentmethod(id='CASH', payer=None)
 
 @pytest.fixture
-def load_test_data(test_chain, test_store, test_paymentmethod):
-    receipt = models.Receipt(
+def test_receipt():
+    return models.Receipt(
         datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
         store_id='STORE_1',
         paymentmethod_id='CASH',
@@ -74,7 +74,10 @@ def load_test_data(test_chain, test_store, test_paymentmethod):
         etag='iuyweriuyweriuyhsdkjhskjfh'
     )
 
-    return [test_chain, test_store, test_paymentmethod]
+
+@pytest.fixture
+def load_test_data(test_chain, test_store, test_paymentmethod, test_receipt):
+    return [test_chain, test_store, test_paymentmethod, test_receipt]
 
 
 @pytest.fixture
@@ -83,7 +86,10 @@ def test_db_session(load_test_data):
 
     session=SessionLocal()
 
-    session.add_all(load_test_data)
+    # I have no idea why this works and session.add_all(load_test_data) didn't
+    for obj in load_test_data:
+        session.add(obj)
+        session.flush()
 
     yield session
 
