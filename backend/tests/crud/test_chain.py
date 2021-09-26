@@ -14,3 +14,12 @@ def test_get_chain(test_chain, test_db_session):
     get_chain = crud.get_chain(test_db_session, test_chain.id)
 
     assert get_chain == test_chain
+
+
+def test_update_chain(test_chain, test_db_session):
+    new_chain = schemas.Chain(id=test_chain.id, name='New Name!')
+
+    db_chain = crud.update_chain(test_db_session, new_chain)
+
+    assert db_chain.id == new_chain.id
+    assert db_chain.name == new_chain.name

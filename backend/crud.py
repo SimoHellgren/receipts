@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from . import models
 from . import schemas
 
+
 def get_chains(db: Session):
     return db.query(models.Chain).all()
 
@@ -18,6 +19,20 @@ def create_chain(db: Session, chain: schemas.Chain):
         id=chain.id,
         name=chain.name
     )
+
+    db.add(db_chain)
+    db.commit()
+    db.refresh(db_chain)
+
+    return db_chain
+
+
+def update_chain(db: Session, chain: schemas.Chain):
+    print(chain)
+    db_chain = db.query(models.Chain).get(chain.id)
+
+    for k, v in chain.dict().items():
+        setattr(db_chain, k, v)
 
     db.add(db_chain)
     db.commit()
