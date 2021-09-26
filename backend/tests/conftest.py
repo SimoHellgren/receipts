@@ -72,10 +72,11 @@ def test_receipt():
         store_id='STORE_1',
         paymentmethod_id='CASH',
         total=11.11,
-        id='test_id',
+        id='RECEIPT_1',
         reprint='Test reprint',
         etag='iuyweriuyweriuyhsdkjhskjfh'
     )
+
 
 @pytest.fixture
 def test_product():
@@ -84,9 +85,17 @@ def test_product():
         name='Product 1'
     )
 
+
 @pytest.fixture
-def load_test_data(test_chain, test_store, test_paymentmethod, test_receipt, test_product):
-    return [test_chain, test_store, test_paymentmethod, test_receipt, test_product]
+def test_receiptlines():
+    line1 = models.Receiptline(receipt_id='RECEIPT_1', linenumber=1, product_id='PRODUCT_1', amount=1.15)
+    line2 = models.Receiptline(receipt_id='RECEIPT_1', linenumber=2, product_id='PRODUCT_1', amount=1.15)
+    return [line1, line2]
+    
+
+@pytest.fixture
+def load_test_data(test_chain, test_store, test_paymentmethod, test_receipt, test_product, test_receiptlines):
+    return [test_chain, test_store, test_paymentmethod, test_receipt, test_product, *test_receiptlines]
 
 
 @pytest.fixture
