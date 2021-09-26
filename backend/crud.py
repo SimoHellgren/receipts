@@ -8,6 +8,11 @@ from . import schemas
 def get_chains(db: Session):
     return db.query(models.Chain).all()
 
+
+def get_chain(db: Session, chain_id: str):
+    return db.query(models.Chain).get(chain_id)
+
+
 def create_chain(db: Session, chain: schemas.Chain):
     db_chain = models.Chain(
         id=chain.id,
