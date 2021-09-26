@@ -50,17 +50,21 @@ def create_test_db():
 
     drop_database(engine.url)
 
+
 @pytest.fixture
 def test_chain():
     return models.Chain(id='CHAIN_1', name='Chain 1')
+
 
 @pytest.fixture
 def test_store():
     return models.Store(id='STORE_1', name='Store 1', chain_id='CHAIN_1')
 
+
 @pytest.fixture
 def test_paymentmethod():
     return models.Paymentmethod(id='CASH', payer=None)
+
 
 @pytest.fixture
 def test_receipt():
