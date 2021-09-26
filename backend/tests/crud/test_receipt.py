@@ -5,6 +5,12 @@ import pytest
 from backend import crud, schemas
 
 
+def test_get_receipt(test_receipt, test_db_session):
+    get_receipt = crud.get_receipt(test_db_session, test_receipt.id)
+
+    assert get_receipt == test_receipt
+
+
 def test_create_receipt(test_store, test_paymentmethod, test_db_session):
     receipt_in = schemas.ReceiptCreate(
         id='test_receipt',
