@@ -28,7 +28,6 @@ def create_chain(db: Session, chain: schemas.Chain):
 
 
 def update_chain(db: Session, chain: schemas.Chain):
-    print(chain)
     db_chain = db.query(models.Chain).get(chain.id)
 
     for k, v in chain.dict().items():
