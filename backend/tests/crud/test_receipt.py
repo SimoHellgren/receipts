@@ -1,20 +1,20 @@
+from datetime import datetime
+
 import pytest
-from backend import crud
 
-def test_no_receipts_in_db(test_db_session):
-    '''Ensure there are no receipts to begin with'''
-    data = crud.get_receipts(test_db_session)
-
-    assert len(data) == 0
+from backend import crud, schemas
 
 
-def test_create_receipt(chain_test_data, store_test_data, paymentmethod_test_data, receipt_test_data, test_db_session):
-    # This setup is getting rather tedious
-    chain = crud.create_chain(test_db_session, chain_test_data)
-    store = crud.create_store(test_db_session, store_test_data)
-    paymentmethod = crud.create_paymentmethod(test_db_session, paymentmethod_test_data)
-
-    receipt_in = receipt_test_data
+def test_create_receipt(test_store, test_paymentmethod, test_db_session):
+    receipt_in = schemas.ReceiptCreate(
+        id='test_receipt',
+        datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
+        store_id=test_store.id,
+        paymentmethod_id=test_paymentmethod.id,
+        total=123.123,
+        reprint='Välkommen åter!',
+        etag='Q29uZ3JhdGlvbiwgeW91IGRvbmUgaXQh'
+    )
     db_receipt = crud.create_receipt(test_db_session, receipt_in)
 
     assert db_receipt.id == receipt_in.id
