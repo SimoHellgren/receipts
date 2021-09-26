@@ -1,5 +1,6 @@
 '''pydantic models for fastapi'''
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -82,4 +83,4 @@ class StoreCreate(StoreBase):
 
 class Paymentmethod(BaseModel):
     id: str
-    payer: str
+    payer: Optional[str]
