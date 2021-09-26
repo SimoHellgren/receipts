@@ -11,7 +11,6 @@ from fastapi.testclient import TestClient
 from backend.api import app
 from backend.models import Base
 from backend.dependencies import get_db
-from backend import schemas
 from backend import models
 
 load_dotenv()
