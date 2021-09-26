@@ -78,10 +78,16 @@ def test_receipt():
         etag='iuyweriuyweriuyhsdkjhskjfh'
     )
 
+@pytest.fixture
+def test_product():
+    return models.Product(
+        id='PRODUCT_1',
+        name='Product 1'
+    )
 
 @pytest.fixture
-def load_test_data(test_chain, test_store, test_paymentmethod, test_receipt):
-    return [test_chain, test_store, test_paymentmethod, test_receipt]
+def load_test_data(test_chain, test_store, test_paymentmethod, test_receipt, test_product):
+    return [test_chain, test_store, test_paymentmethod, test_receipt, test_product]
 
 
 @pytest.fixture
