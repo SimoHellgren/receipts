@@ -54,10 +54,13 @@ def create_test_db():
 def test_chain():
     return models.Chain(id='CHAIN_1', name='Chain 1')
 
+@pytest.fixture
+def test_store():
+    return models.Store(id='STORE_1', name='Store 1', chain_id='CHAIN_1')
+
 
 @pytest.fixture
-def load_test_data(test_chain):
-    store = models.Store(id='STORE_1', name='Store 1', chain_id='CHAIN_1')
+def load_test_data(test_chain, test_store):
     paymentmethod = models.Paymentmethod(id='CASH', payer=None)
     receipt = models.Receipt(
         datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
@@ -69,7 +72,7 @@ def load_test_data(test_chain):
         etag='iuyweriuyweriuyhsdkjhskjfh'
     )
 
-    return [test_chain, store, paymentmethod]
+    return [test_chain, test_store, paymentmethod]
 
 
 @pytest.fixture
