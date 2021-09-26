@@ -1,7 +1,7 @@
-from backend import crud
+from backend import crud, schemas
 
-def test_create_chain(chain_test_data, test_db_session):
-    chain_in = chain_test_data
+def test_create_chain(test_db_session):
+    chain_in = schemas.Chain(id='CHAIN_2', name='Chain 2')
 
     db_chain = crud.create_chain(test_db_session, chain_in)
 
@@ -9,11 +9,7 @@ def test_create_chain(chain_test_data, test_db_session):
     assert chain_in.name == db_chain.name
 
 
-def test_get_chain(chain_test_data, test_db_session):
-    chain_in = chain_test_data
+def test_get_chain(test_chain, test_db_session):
+    get_chain = crud.get_chain(test_db_session, test_chain.id)
 
-    db_chain = crud.create_chain(test_db_session, chain_in)
-
-    get_chain = crud.get_chain(test_db_session, chain_in.id)
-
-    assert db_chain == get_chain
+    assert get_chain == test_chain
