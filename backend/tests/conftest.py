@@ -12,6 +12,7 @@ from backend.api import app
 from backend.models import Base
 from backend.dependencies import get_db
 from backend import schemas
+from backend import models
 
 load_dotenv()
 
@@ -49,12 +50,35 @@ def create_test_db():
 
     drop_database(engine.url)
 
+@pytest.fixture
+def test_chain():
+    return models.Chain(id='CHAIN_1', name='Chain 1')
 
-@pytest.fixture(autouse=True)
-def test_db_session():
+
+@pytest.fixture
+def load_test_data(test_chain):
+    store = models.Store(id='STORE_1', name='Store 1', chain_id='CHAIN_1')
+    paymentmethod = models.Paymentmethod(id='CASH', payer=None)
+    receipt = models.Receipt(
+        datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
+        store_id='STORE_1',
+        paymentmethod_id='CASH',
+        total=11.11,
+        id='test_id',
+        reprint='Test reprint',
+        etag='iuyweriuyweriuyhsdkjhskjfh'
+    )
+
+    return [test_chain, store, paymentmethod]
+
+
+@pytest.fixture
+def test_db_session(load_test_data):
     SessionLocal = sessionmaker(bind=engine)
 
     session=SessionLocal()
+
+    session.add_all(load_test_data)
 
     yield session
 
@@ -69,36 +93,3 @@ def test_db_session():
 def client():
     with TestClient(app) as c:
         yield c
-
-
-@pytest.fixture
-def chain_test_data():
-    chain1 = schemas.Chain(id='CHAIN_1', name='Chain 1')
-    return chain1
-
-
-@pytest.fixture
-def store_test_data():
-    store1 = schemas.StoreCreate(id='STORE_1', name='Store 1', chain_id='CHAIN_1')
-    return store1
-
-
-@pytest.fixture
-def paymentmethod_test_data():
-    paymentmethod1 = schemas.Paymentmethod(id='CASH', payer=None)
-    return paymentmethod1
-
-
-@pytest.fixture
-def receipt_test_data():
-    receipt1 = schemas.ReceiptCreate(
-        datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
-        store_id='STORE_1',
-        paymentmethod_id='CASH',
-        total=11.11,
-        id='test_id',
-        reprint='Test reprint',
-        etag='iuyweriuyweriuyhsdkjhskjfh'
-    )
-
-    return receipt1
