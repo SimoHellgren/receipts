@@ -1,13 +1,6 @@
 import pytest
 from backend import crud
 
-def test_no_receipts_in_db(test_db_session):
-    '''Ensure there are no receipts to begin with'''
-    data = crud.get_receipts(test_db_session)
-
-    assert len(data) == 0
-
-
 def test_create_receipt(chain_test_data, store_test_data, paymentmethod_test_data, receipt_test_data, test_db_session):
     # This setup is getting rather tedious
     chain = crud.create_chain(test_db_session, chain_test_data)
