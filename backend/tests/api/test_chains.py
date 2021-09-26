@@ -1,3 +1,9 @@
+def test_get_all(client):
+    response = client.get('/')
+
+    assert len(response.json()) > 0
+
+
 def test_post(client):
     chain = {
         'id': 'CHAIN_X',
