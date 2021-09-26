@@ -13,6 +13,7 @@ from backend.models import Base
 from backend.dependencies import get_db
 from backend import models
 
+
 load_dotenv()
 
 engine = create_engine(os.environ['TEST_DB_URI'])

@@ -1,5 +1,6 @@
 from backend import crud, schemas
 
+
 def test_create_chain(test_db_session):
     chain_in = schemas.Chain(id='CHAIN_2', name='Chain 2')
 

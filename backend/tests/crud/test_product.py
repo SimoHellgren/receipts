@@ -1,5 +1,6 @@
 from backend import crud, schemas
 
+
 def test_create_product(test_db_session):
     product_in = schemas.ProductCreate(id='PRODUCT_2')
 

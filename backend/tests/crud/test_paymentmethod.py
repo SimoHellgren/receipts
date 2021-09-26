@@ -1,5 +1,6 @@
 from backend import crud, schemas
 
+
 def test_create_paymentmethod(test_db_session):
     paymentmethod_in = schemas.Paymentmethod(id='CARD', payer='A person')
     db_paymentmethod = crud.create_paymentmethod(test_db_session, paymentmethod_in)
