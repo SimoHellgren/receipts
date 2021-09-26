@@ -15,6 +15,12 @@ router = APIRouter(
 def get_chains(db: Session = Depends(get_db)):
     return crud.get_chains(db)
 
+
 @router.post('/', status_code=status.HTTP_201_CREATED)
 def create_chain(chain: schemas.Chain, db: Session = Depends(get_db)):
     return crud.create_chain(db, chain)
+
+
+@router.put('/{chain_id}/')
+def update_chain(chain: schemas.Chain, db: Session = Depends(get_db)):
+    return crud.update_chain(db, chain)
