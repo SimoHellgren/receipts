@@ -30,6 +30,10 @@ def get_stores(db: Session):
     return db.query(models.Store).all()
 
 
+def get_store(db: Session, store_id: str):
+    return db.query(models.Store).get(store_id)
+
+
 def create_store(db: Session, store: schemas.StoreCreate):
     db_store = models.Store(
         id=store.id,
