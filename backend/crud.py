@@ -52,6 +52,10 @@ def get_paymentmethods(db: Session):
     return db.query(models.Paymentmethod).all()
 
 
+def get_paymentmethod(db: Session, paymentmethod_id: str):
+    return db.query(models.Paymentmethod).get(paymentmethod_id)
+
+
 def create_paymentmethod(db: Session, paymentmethod: schemas.Paymentmethod):
     db_paymentmethod = models.Paymentmethod(
         id=paymentmethod.id,
