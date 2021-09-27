@@ -6,26 +6,6 @@ from .. import models
 from .. import schemas
 
 
-def get_paymentmethods(db: Session):
-    return db.query(models.Paymentmethod).all()
-
-
-def get_paymentmethod(db: Session, paymentmethod_id: str):
-    return db.query(models.Paymentmethod).get(paymentmethod_id)
-
-
-def create_paymentmethod(db: Session, paymentmethod: schemas.Paymentmethod):
-    db_paymentmethod = models.Paymentmethod(
-        id=paymentmethod.id,
-        payer=paymentmethod.payer
-    )
-
-    db.add(db_paymentmethod)
-    db.commit()
-    db.refresh(db_paymentmethod)
-
-    return db_paymentmethod
-
 def get_products(db: Session):
     return db.query(models.Product).all()
 
