@@ -6,41 +6,6 @@ from .. import models
 from .. import schemas
 
 
-def get_stores(db: Session):
-    return db.query(models.Store).all()
-
-
-def get_store(db: Session, store_id: str):
-    return db.query(models.Store).get(store_id)
-
-
-def create_store(db: Session, store: schemas.StoreCreate):
-    db_store = models.Store(
-        id=store.id,
-        name=store.name,
-        chain_id=store.chain_id
-    )
-
-    db.add(db_store)
-    db.commit()
-    db.refresh(db_store)
-
-    return db_store
-
-
-def update_store(db: Session, store: schemas.Store):
-    db_store = db.query(models.Store).get(store.id)
-
-    for k, v in store.dict().items():
-        setattr(db_store, k, v)
-
-    db.add(db_store)
-    db.commit()
-    db.refresh(db_store)
-
-    return db_store
-
-
 def get_paymentmethods(db: Session):
     return db.query(models.Paymentmethod).all()
 

@@ -15,30 +15,30 @@ router = APIRouter(
 
 @router.get('/')
 def get_stores(db: Session = Depends(get_db)):
-    return crud.get_stores(db)
+    return crud.store.get_many(db)
 
 
 @router.get('/{store_id}')
 def get_store(store_id: str, db = Depends(get_db)):
-    return crud.get_store(db, store_id)
+    return crud.store.get(db, store_id)
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
 def create_store(store: schemas.StoreCreate, db: Session = Depends(get_db)):
-    return crud.create_store(db, store)
+    return crud.store.create(db, obj_in=store)
 
 
 @router.put('/{store_id}')
 def update_store(store_id: str, store: schemas.Store, db: Session = Depends(get_db)):
-    db_store = crud.get_store(db, store_id)
+    db_store = crud.store.get(db, store_id)
 
     if db_store:
         response_code = status.HTTP_200_OK
-        new_store = crud.update_store(db, store)
+        new_store = crud.store.update(db, db_obj=db_store, obj_in=store)
 
     else:
         response_code = status.HTTP_201_CREATED
-        new_store = crud.create_store(db, store)
+        new_store = crud.store.create(db, obj_in=store)
 
     return JSONResponse(
         status_code=response_code,

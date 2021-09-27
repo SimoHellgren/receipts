@@ -7,7 +7,7 @@ from backend import crud, schemas
 def test_create_store(test_data, test_db_session):
     test_chain = test_data['chain']
     store_in = schemas.StoreCreate(id='STORE_2', name='Store 2', chain_id=test_chain.id)
-    db_store = crud.create_store(test_db_session, store_in)
+    db_store = crud.store.create(test_db_session, obj_in=store_in)
 
     assert db_store.id == store_in.id
     assert db_store.name == store_in.name
@@ -19,12 +19,12 @@ def test_create_store_fk_fail(test_db_session):
     store_in = schemas.StoreCreate(id='STORE_X', name='Store X', chain_id='UNKNOWN')
     
     with pytest.raises(IntegrityError):
-        db_store = crud.create_store(test_db_session, store_in)
+        db_store = crud.store.create(test_db_session, obj_in=store_in)
 
 
 def test_get_store(test_data, test_db_session):
     test_store = test_data['store']
-    get_store = crud.get_store(test_db_session, test_store.id)
+    get_store = crud.store.get(test_db_session, test_store.id)
 
     assert get_store.id == test_store.id
     assert get_store.name == test_store.name
@@ -36,7 +36,8 @@ def test_update_store(test_data, test_db_session):
     
     new_store = schemas.Store(id=test_store.id, name='NEW NAME', chain_id=test_store.chain_id)
 
-    db_store = crud.update_store(test_db_session, new_store)
+    db_store = crud.store.get(test_db_session, test_store.id)
+    db_store = crud.store.update(test_db_session, db_obj=db_store, obj_in=new_store)
 
     assert db_store.id == new_store.id
     assert db_store.name == new_store.name
