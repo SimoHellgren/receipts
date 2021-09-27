@@ -18,16 +18,51 @@ load_dotenv()
 
 engine = create_engine(os.environ['TEST_DB_URI'])
 
+def make_test_data():
+     return {
+        'chain': models.Chain(id='CHAIN_1', name='Chain 1'),
+        'store': models.Store(id='STORE_1', name='Store 1', chain_id='CHAIN_1'),
+        'paymentmethod': models.Paymentmethod(id='CASH', payer=None),
+        'receipt': models.Receipt(
+            datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
+            store_id='STORE_1',
+            paymentmethod_id='CASH',
+            total=11.11,
+            id='RECEIPT_1',
+            reprint='Test reprint',
+            etag='iuyweriuyweriuyhsdkjhskjfh'
+        ),
+        'product': models.Product(id='PRODUCT_1', name='Product 1'),
+        'line1': models.Receiptline(receipt_id='RECEIPT_1', linenumber=1, product_id='PRODUCT_1', amount=1.15),
+        'line2': models.Receiptline(receipt_id='RECEIPT_1', linenumber=2, product_id='PRODUCT_1', amount=1.15)
+    }
+
+@pytest.fixture
+def test_data():
+    return make_test_data()
+
 
 def get_test_db():
     SessionLocal = sessionmaker(bind=engine)
     test_db = SessionLocal()
 
+    for v in make_test_data().values():
+        test_db.add(v)
+        test_db.flush()
+
     try:
         yield test_db
 
     finally:
+        # drop all data after each test
+        for tbl in reversed(Base.metadata.sorted_tables):
+            engine.execute(tbl.delete())
         test_db.close()
+
+
+@pytest.fixture
+def test_db_session():
+    yield from get_test_db()
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -49,74 +84,6 @@ def create_test_db():
     yield # tests run at this point
 
     drop_database(engine.url)
-
-
-@pytest.fixture
-def test_chain():
-    return models.Chain(id='CHAIN_1', name='Chain 1')
-
-
-@pytest.fixture
-def test_store():
-    return models.Store(id='STORE_1', name='Store 1', chain_id='CHAIN_1')
-
-
-@pytest.fixture
-def test_paymentmethod():
-    return models.Paymentmethod(id='CASH', payer=None)
-
-
-@pytest.fixture
-def test_receipt():
-    return models.Receipt(
-        datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
-        store_id='STORE_1',
-        paymentmethod_id='CASH',
-        total=11.11,
-        id='RECEIPT_1',
-        reprint='Test reprint',
-        etag='iuyweriuyweriuyhsdkjhskjfh'
-    )
-
-
-@pytest.fixture
-def test_product():
-    return models.Product(
-        id='PRODUCT_1',
-        name='Product 1'
-    )
-
-
-@pytest.fixture
-def test_receiptlines():
-    line1 = models.Receiptline(receipt_id='RECEIPT_1', linenumber=1, product_id='PRODUCT_1', amount=1.15)
-    line2 = models.Receiptline(receipt_id='RECEIPT_1', linenumber=2, product_id='PRODUCT_1', amount=1.15)
-    return [line1, line2]
-    
-
-@pytest.fixture
-def load_test_data(test_chain, test_store, test_paymentmethod, test_receipt, test_product, test_receiptlines):
-    return [test_chain, test_store, test_paymentmethod, test_receipt, test_product, *test_receiptlines]
-
-
-@pytest.fixture
-def test_db_session(load_test_data):
-    SessionLocal = sessionmaker(bind=engine)
-
-    session=SessionLocal()
-
-    # I have no idea why this works and session.add_all(load_test_data) didn't
-    for obj in load_test_data:
-        session.add(obj)
-        session.flush()
-
-    yield session
-
-    # drop all data after each test
-    for tbl in reversed(Base.metadata.sorted_tables):
-        engine.execute(tbl.delete())
-    
-    session.close()
 
 
 @pytest.fixture(autouse=True)

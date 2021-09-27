@@ -5,13 +5,25 @@ import pytest
 from backend import crud, schemas
 
 
-def test_get_receipt(test_receipt, test_db_session):
+def test_get_receipt(test_data, test_db_session):
+    test_receipt = test_data['receipt']
     get_receipt = crud.get_receipt(test_db_session, test_receipt.id)
 
-    assert get_receipt == test_receipt
+    assert get_receipt.id == test_receipt.id
+    assert get_receipt.store_id == test_receipt.store_id
+    assert get_receipt.paymentmethod_id == test_receipt.paymentmethod_id
+    assert get_receipt.etag == test_receipt.etag
+    assert get_receipt.reprint == test_receipt.reprint
+
+    assert get_receipt.datetime.timestamp() == test_receipt.datetime.timestamp()
+    
+    assert pytest.approx(get_receipt.total, test_receipt.total)
 
 
-def test_create_receipt(test_store, test_paymentmethod, test_db_session):
+def test_create_receipt(test_data, test_db_session):
+    test_store = test_data['store']
+    test_paymentmethod = test_data['paymentmethod']
+    
     receipt_in = schemas.ReceiptCreate(
         id='test_receipt',
         datetime=datetime(2021, 1, 1, 0, 0, 0, 0),

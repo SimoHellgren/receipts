@@ -9,7 +9,9 @@ def test_create_paymentmethod(test_db_session):
     assert db_paymentmethod.payer == paymentmethod_in.payer
 
 
-def test_get_paymentmethod(test_paymentmethod, test_db_session):
+def test_get_paymentmethod(test_data, test_db_session):
+    test_paymentmethod = test_data['paymentmethod']
     get_paymentmethod = crud.get_paymentmethod(test_db_session, test_paymentmethod.id)
 
-    assert get_paymentmethod == test_paymentmethod
+    assert get_paymentmethod.id == test_paymentmethod.id
+    assert get_paymentmethod.payer == test_paymentmethod.payer

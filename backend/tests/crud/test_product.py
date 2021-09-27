@@ -9,7 +9,9 @@ def test_create_product(test_db_session):
     assert db_product.id == product_in.id
 
 
-def test_get_product(test_product, test_db_session):
+def test_get_product(test_data, test_db_session):
+    test_product = test_data['product']
     get_product = crud.get_product(test_db_session, test_product.id)
 
-    assert get_product == test_product
+    assert get_product.id == test_product.id
+    assert get_product.name == test_product.name
