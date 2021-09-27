@@ -16,6 +16,11 @@ def get_stores(db: Session = Depends(get_db)):
     return crud.get_stores(db)
 
 
+@router.get('/{store_id}')
+def get_store(store_id: str, db = Depends(get_db)):
+    return crud.get_store(db, store_id)
+
+
 @router.post('/')
 def create_store(store: schemas.StoreCreate, db: Session = Depends(get_db)):
     return crud.create_store(db, store)

@@ -3,3 +3,17 @@ def test_get_all(client):
 
     assert response.status_code == 200
     assert len(response.json()) > 0
+
+
+def test_get_one(client, test_data):
+    test_store = test_data['store']
+
+    response = client.get(f'/stores/{test_store.id}/')
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data['id'] == test_store.id
+    assert data['name'] == test_store.name
+    assert data['chain_id'] == test_store.chain_id
