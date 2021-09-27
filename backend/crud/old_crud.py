@@ -6,40 +6,6 @@ from .. import models
 from .. import schemas
 
 
-def get_chains(db: Session):
-    return db.query(models.Chain).all()
-
-
-def get_chain(db: Session, chain_id: str):
-    return db.query(models.Chain).get(chain_id)
-
-
-def create_chain(db: Session, chain: schemas.Chain):
-    db_chain = models.Chain(
-        id=chain.id,
-        name=chain.name
-    )
-
-    db.add(db_chain)
-    db.commit()
-    db.refresh(db_chain)
-
-    return db_chain
-
-
-def update_chain(db: Session, chain: schemas.Chain):
-    db_chain = db.query(models.Chain).get(chain.id)
-
-    for k, v in chain.dict().items():
-        setattr(db_chain, k, v)
-
-    db.add(db_chain)
-    db.commit()
-    db.refresh(db_chain)
-
-    return db_chain
-
-
 def get_stores(db: Session):
     return db.query(models.Store).all()
 
