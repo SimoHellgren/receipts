@@ -17,3 +17,15 @@ def test_get_one(client, test_data):
     assert data['id'] == test_store.id
     assert data['name'] == test_store.name
     assert data['chain_id'] == test_store.chain_id
+
+
+def test_post(client):
+    store_in = {'id': 'NEWSTORE', 'name': 'New Store!', 'chain_id': 'CHAIN_1'}
+
+    response = client.post('/stores/', json=store_in)
+
+    assert response.status_code == 201
+
+    data = response.json()
+
+    assert data == store_in
