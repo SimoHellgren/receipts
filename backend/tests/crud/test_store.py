@@ -29,3 +29,15 @@ def test_get_store(test_data, test_db_session):
     assert get_store.id == test_store.id
     assert get_store.name == test_store.name
     assert get_store.chain_id == test_store.chain_id
+
+
+def test_update_store(test_data, test_db_session):
+    test_store = test_data['store']
+    
+    new_store = schemas.Store(id=test_store.id, name='NEW NAME', chain_id=test_store.chain_id)
+
+    db_store = crud.update_store(test_db_session, new_store)
+
+    assert db_store.id == new_store.id
+    assert db_store.name == new_store.name
+    assert db_store.chain_id == new_store.chain_id
