@@ -6,27 +6,6 @@ from .. import models
 from .. import schemas
 
 
-def get_products(db: Session):
-    return db.query(models.Product).all()
-
-def get_product(db: Session, product_id: str):
-    return db.query(models.Product).get(product_id)
-
-
-
-def create_product(db: Session, product: schemas.ProductCreate):
-    db_product=models.Product(
-        id=product.id,
-        name=None
-    )
-
-    db.add(db_product)
-    db.commit()
-    db.refresh(db_product)
-
-    return db_product
-
-
 def get_receipts(db: Session):
     return db.query(models.Receipt).all()
 

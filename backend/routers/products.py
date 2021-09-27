@@ -13,9 +13,9 @@ router = APIRouter(
 
 @router.get('/')
 def get_products(db: Session = Depends(get_db)):
-    return crud.get_products(db)
+    return crud.product.get_many(db)
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
 def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)):
-    return crud.create_product(db, product)
+    return crud.product.create(db, obj_in=product)
