@@ -22,17 +22,13 @@ def test_post(client):
     assert chain['name'] == data['name']
 
 
-def test_put_change(client, test_data):
-    '''Tests for case when PUT changes the chain'''
-    chain_id = test_data['chain'].id
-    chain = {
-        'id': chain_id,
-        'name': 'New name!'
-    }
+def test_put_new(client):
+    '''Tests for case when a new Chain gets created by PUT'''
+    chain = {'id': 'NEW_CHAIN', 'name': 'A new chain'}
 
-    response = client.put(f'/chains/{chain_id}/', json=chain)
+    response = client.put(f"/chains/{chain['id']}/", json=chain)
 
-    # assert response.status_code == 201
+    assert response.status_code == 201
     
     data = response.json()
 
@@ -40,18 +36,31 @@ def test_put_change(client, test_data):
     assert chain['name'] == data['name']
 
 
-def test_put_no_change(client, test_data):
-    '''Tests for case when PUT does not change the chain'''
+def test_put_existing_change(client, test_data):
+    '''Tests for case when an existing chain is updated with a new value'''
     test_chain = test_data['chain']
-    chain_id = test_chain.id
-    chain = {
-        'id': chain_id,
-        'name': test_chain.name
-    }
+    
+    chain = {'id': test_chain.id, 'name': 'A name change!'}
 
-    response = client.put(f'/chains/{chain_id}/', json=chain)
+    response = client.put(f"/chains/{chain['id']}/", json=chain)
 
-    # assert response.status_code == 200
+    assert response.status_code == 200
+    
+    data = response.json()
+
+    assert chain['id'] == data['id']
+    assert chain['name'] == data['name']
+
+
+def test_put_existing_no_change(client, test_data):
+    '''Tests for case when an existing chain is updated with no new values'''
+    test_chain = test_data['chain']
+    
+    chain = {'id': test_chain.id, 'name': test_chain.name}
+
+    response = client.put(f"/chains/{chain['id']}/", json=chain)
+
+    assert response.status_code == 200
     
     data = response.json()
 
