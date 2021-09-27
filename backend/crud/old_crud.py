@@ -2,8 +2,8 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from . import models
-from . import schemas
+from .. import models
+from .. import schemas
 
 
 def get_chains(db: Session):
