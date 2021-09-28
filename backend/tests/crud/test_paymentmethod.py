@@ -15,3 +15,15 @@ def test_get_paymentmethod(test_data, test_db_session):
 
     assert get_paymentmethod.id == test_paymentmethod.id
     assert get_paymentmethod.payer == test_paymentmethod.payer
+
+
+def test_update_paymentmethod(test_data, test_db_session):
+    test_paymentmethod = test_data['paymentmethod']
+    obj_in = schemas.Paymentmethod(id=test_paymentmethod.id, payer='Someone new, perhaps.')
+
+    db_obj = crud.paymentmethod.get(test_db_session, obj_in.id)
+
+    updated_obj = crud.paymentmethod.update(test_db_session, db_obj=db_obj, obj_in=obj_in)
+
+    assert obj_in.id == updated_obj.id
+    assert obj_in.payer == updated_obj.payer
