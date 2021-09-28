@@ -44,6 +44,6 @@ def get_receipt_lines(receipt_id: str, db: Session = Depends(get_db)):
     return db_receiptlines
 
 
-@router.post('/{receipt_id}/lines')
+@router.post('/{receipt_id}/lines', status_code=status.HTTP_201_CREATED)
 def create_receipt_lines(receipt_id: str, lines: List[schemas.ReceiptlineCreate], db: Session = Depends(get_db)):
     return crud.create_receiptlines(db, receipt_id, lines)
