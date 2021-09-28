@@ -46,3 +46,33 @@ def test_create_receipt(test_data, test_db_session):
         
     # totals approximately equal, since they are floats. Should change to integer amount of cents
     assert pytest.approx(db_receipt.total, receipt_in.total)
+
+
+def test_update_receipt(test_data, test_db_session):
+    test_receipt = test_data['receipt']
+    
+    receipt_in = schemas.Receipt(
+        id=test_receipt.id,
+        datetime=datetime(2021, 1, 2, 0, 0, 0, 0),
+        store_id=test_receipt.store_id,
+        paymentmethod_id=test_receipt.paymentmethod_id,
+        total=321.123,
+        reprint='Hej då, tack för idag',
+        etag='Q0FUUzogQUxMIFlPVVIgQkFTRSBBUkUgQkVMT05HIFRPIFVT'
+    )
+
+    db_receipt = crud.receipt.get(test_db_session, test_receipt.id)
+    new_receipt = crud.receipt.update(test_db_session, db_obj = db_receipt, obj_in=receipt_in)
+
+    assert new_receipt.id == receipt_in.id
+    assert new_receipt.store_id == receipt_in.store_id
+    assert new_receipt.paymentmethod_id == receipt_in.paymentmethod_id
+    assert new_receipt.reprint == receipt_in.reprint
+    assert new_receipt.etag == receipt_in.etag
+    
+    # compare timestamps to avoid timezones for now, though should probably do something more elegant
+    assert new_receipt.datetime.timestamp() == receipt_in.datetime.timestamp() 
+        
+    # totals approximately equal, since they are floats. Should change to integer amount of cents
+    assert pytest.approx(new_receipt.total, receipt_in.total)
+    
