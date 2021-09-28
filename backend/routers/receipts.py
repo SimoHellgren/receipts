@@ -1,6 +1,8 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, status
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import HTTPException
 from sqlalchemy.orm import Session
 
@@ -32,6 +34,21 @@ def get_receipt(receipt_id: str, db: Session = Depends(get_db)):
 @router.post('/', status_code=status.HTTP_201_CREATED)
 def create_receipt(receipt: schemas.ReceiptCreate, db: Session = Depends(get_db)):
     return crud.receipt.create(db, obj_in=receipt)
+
+
+@router.put('/{receipt_id}')
+def update_receipt(receipt_id: str, receipt: schemas.Receipt, db: Session = Depends(get_db)):
+    db_obj = crud.receipt.get(db, receipt_id)
+
+    if db_obj:
+        response_code = status.HTTP_200_OK
+        new_obj = crud.receipt.update(db, db_obj=db_obj, obj_in=receipt)
+    
+    else:
+        response_code = status.HTTP_201_CREATED
+        new_obj = crud.receipt.create(db, obj_in=receipt) # techincally receipt isn't the type obj_in expects
+    
+    return JSONResponse(status_code=response_code, content=jsonable_encoder(new_obj))
 
 
 @router.get('/{receipt_id}/lines', response_model=List[schemas.Receiptline])
