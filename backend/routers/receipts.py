@@ -64,3 +64,18 @@ def get_receipt_lines(receipt_id: str, db: Session = Depends(get_db)):
 @router.post('/{receipt_id}/lines', status_code=status.HTTP_201_CREATED)
 def create_receipt_line(receipt_id: str, line: schemas.ReceiptlineCreate, db: Session = Depends(get_db)):
     return crud.receiptline.create(db, obj_in=line)
+
+
+@router.put('/{receipt_id}/lines/{linenumber}')
+def update_receipts_line(receipt_id: str, linenumber: int, line: schemas.Receiptline, db: Session = Depends(get_db)):
+    db_obj = crud.receiptline.get(db, (receipt_id, linenumber))
+
+    if db_obj:
+        response_code = status.HTTP_200_OK
+        new_obj = crud.receiptline.update(db, db_obj=db_obj, obj_in=line)
+    
+    else:
+        response_code = status.HTTP_201_CREATED
+        new_obj = crud.receiptline.create(db, obj_in=line)
+
+    return JSONResponse(status_code=response_code, content=jsonable_encoder(new_obj))

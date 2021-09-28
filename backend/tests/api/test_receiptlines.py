@@ -36,3 +36,36 @@ def test_post(client, test_data):
     data = response.json()
 
     assert data == receiptline_in
+
+
+def test_put_new_for_receipt(client, test_data):
+    receipt_id = test_data['receipt'].id
+    product_id = test_data['product'].id
+    linenumber = 3
+
+    receiptline_in = {'receipt_id': receipt_id, 'linenumber': linenumber, 'product_id': product_id, 'amount': 1.11}
+
+    response = client.put(f'/receipts/{receipt_id}/lines/{linenumber}', json=receiptline_in)
+
+    assert response.status_code == 201
+
+    data = response.json()
+
+    assert data == receiptline_in
+
+
+def test_put_existing_for_receipt(client, test_data):
+    test_line = test_data['line1']
+    receipt_id = test_line.receipt_id
+    product_id = test_line.product_id
+    linenumber = test_line.linenumber
+
+    receiptline_in = {'receipt_id': receipt_id, 'linenumber': linenumber, 'product_id': product_id, 'amount': 100.11}
+
+    response = client.put(f'/receipts/{receipt_id}/lines/{linenumber}', json=receiptline_in)
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data == receiptline_in
