@@ -37,3 +37,21 @@ def test_create_receiptlines(test_data, test_db_session):
     assert db_receiptline.product_id == receiptline_in.product_id
     assert pytest.approx(db_receiptline.amount, receiptline_in.amount)
     assert db_receiptline.receipt_id == test_receipt.id
+
+
+def test_update_receiptline(test_data, test_db_session):
+    test_receipt = test_data['receipt']
+    test_product = test_data['product']
+    receiptline_in = schemas.Receiptline(
+        receipt_id=test_receipt.id,
+        linenumber=3,
+        product_id=test_product.id,
+        amount=10.11
+    )
+
+    db_receiptline = crud.receiptline.create(test_db_session, obj_in=receiptline_in)
+
+    assert db_receiptline.linenumber == receiptline_in.linenumber
+    assert db_receiptline.product_id == receiptline_in.product_id
+    assert pytest.approx(db_receiptline.amount, receiptline_in.amount)
+    assert db_receiptline.receipt_id == test_receipt.id
