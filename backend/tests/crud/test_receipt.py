@@ -7,7 +7,7 @@ from backend import crud, schemas
 
 def test_get_receipt(test_data, test_db_session):
     test_receipt = test_data['receipt']
-    get_receipt = crud.get_receipt(test_db_session, test_receipt.id)
+    get_receipt = crud.receipt.get(test_db_session, test_receipt.id)
 
     assert get_receipt.id == test_receipt.id
     assert get_receipt.store_id == test_receipt.store_id
@@ -33,7 +33,7 @@ def test_create_receipt(test_data, test_db_session):
         reprint='Välkommen åter!',
         etag='Q29uZ3JhdGlvbiwgeW91IGRvbmUgaXQh'
     )
-    db_receipt = crud.create_receipt(test_db_session, receipt_in)
+    db_receipt = crud.receipt.create(test_db_session, obj_in=receipt_in)
 
     assert db_receipt.id == receipt_in.id
     assert db_receipt.store_id == receipt_in.store_id

@@ -6,31 +6,6 @@ from .. import models
 from .. import schemas
 
 
-def get_receipts(db: Session):
-    return db.query(models.Receipt).all()
-
-
-def get_receipt(db: Session, receipt_id: str):
-    return db.query(models.Receipt).get(receipt_id)
-
-
-def create_receipt(db: Session, receipt: schemas.ReceiptCreate):
-    db_receipt = models.Receipt(
-        id=receipt.id,
-        total=receipt.total,
-        etag=receipt.etag,
-        datetime=receipt.datetime,
-        store_id=receipt.store_id,
-        paymentmethod_id=receipt.paymentmethod_id,
-        reprint=receipt.reprint
-    )
-
-    db.add(db_receipt)
-    db.commit()
-    db.refresh(db_receipt)
-
-    return db_receipt
-
 def get_receiptlines(db: Session, receipt_id: str):
     '''This could use some linting'''
     return db.query(models.Receiptline).filter(

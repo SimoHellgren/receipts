@@ -16,12 +16,12 @@ router = APIRouter(
 
 @router.get('/')
 def get_receipts(db: Session = Depends(get_db)):
-    return crud.get_receipts(db)
+    return crud.receipt.get_many(db)
 
 
 @router.get('/{receipt_id}')
 def get_receipt(receipt_id: str, db: Session = Depends(get_db)):
-    db_receipt = crud.get_receipt(db, receipt_id)
+    db_receipt = crud.receipt.get(db, receipt_id)
     
     if not db_receipt:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Receipt not found')
@@ -31,7 +31,7 @@ def get_receipt(receipt_id: str, db: Session = Depends(get_db)):
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
 def create_receipt(receipt: schemas.ReceiptCreate, db: Session = Depends(get_db)):
-    return crud.create_receipt(db, receipt)
+    return crud.receipt.create(db, obj_in=receipt)
 
 
 @router.get('/{receipt_id}/lines', response_model=List[schemas.Receiptline])
