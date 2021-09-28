@@ -43,10 +43,10 @@ class ReceiptlineBase(BaseModel):
     linenumber: int
     product_id: str
     amount: float
+    receipt_id: str
 
 
 class Receiptline(ReceiptlineBase):
-    receipt_id: str
 
     class Config:
         orm_mode = True

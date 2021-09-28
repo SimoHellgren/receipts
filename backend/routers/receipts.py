@@ -36,7 +36,7 @@ def create_receipt(receipt: schemas.ReceiptCreate, db: Session = Depends(get_db)
 
 @router.get('/{receipt_id}/lines', response_model=List[schemas.Receiptline])
 def get_receipt_lines(receipt_id: str, db: Session = Depends(get_db)):
-    db_receiptlines = crud.get_receiptlines(db, receipt_id)
+    db_receiptlines = crud.receiptline.get_by_receipt(db, receipt_id)
 
     if not db_receiptlines:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Receipt lines not found')
@@ -45,5 +45,5 @@ def get_receipt_lines(receipt_id: str, db: Session = Depends(get_db)):
 
 
 @router.post('/{receipt_id}/lines', status_code=status.HTTP_201_CREATED)
-def create_receipt_lines(receipt_id: str, lines: List[schemas.ReceiptlineCreate], db: Session = Depends(get_db)):
-    return crud.create_receiptlines(db, receipt_id, lines)
+def create_receipt_line(receipt_id: str, line: schemas.ReceiptlineCreate, db: Session = Depends(get_db)):
+    return crud.receiptline.create(db, obj_in=line)

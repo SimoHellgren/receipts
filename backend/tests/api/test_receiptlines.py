@@ -27,13 +27,12 @@ def test_post(client, test_data):
     receipt_id = test_data['receipt'].id
     product_id = test_data['product'].id
 
-    receiptline_in = {'linenumber': 3, 'product_id': product_id, 'amount': 1.11}
+    receiptline_in = {'receipt_id': receipt_id, 'linenumber': 3, 'product_id': product_id, 'amount': 1.11}
 
-    response = client.post(f'/receipts/{receipt_id}/lines', json=[receiptline_in])
+    response = client.post(f'/receipts/{receipt_id}/lines', json=receiptline_in)
 
     assert response.status_code == 201
 
-    data, = response.json()
+    data = response.json()
 
-    assert data.pop('receipt_id') == receipt_id
     assert data == receiptline_in
