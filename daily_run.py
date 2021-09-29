@@ -18,7 +18,7 @@ def main(run_date: datetime):
     transformed_kdata = map(kgroup.transform, kdata)
     transformed_sdata = map(sgroup.transform, sdata)
 
-    load(chain(transformed_kdata, transformed_sdata))
+    return load(chain(transformed_kdata, transformed_sdata))
 
 if __name__ == '__main__':
     import sys
