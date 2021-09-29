@@ -1,9 +1,8 @@
-from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import TIMESTAMP, Integer, Numeric, Text
 
+from backend.db.base_class import Base
 
-Base = declarative_base()
 
 class Chain(Base):
     __tablename__ = 'chain'
