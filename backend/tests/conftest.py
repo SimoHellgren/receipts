@@ -9,7 +9,7 @@ from sqlalchemy_utils import database_exists, create_database, drop_database
 from fastapi.testclient import TestClient
 
 from backend.api import app
-from backend.models import Base
+from backend.db.base_class import Base
 from backend.dependencies import get_db
 from backend import models
 
