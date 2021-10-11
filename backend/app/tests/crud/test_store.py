@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy.exc import IntegrityError
 
-from backend import crud, schemas
+from backend.app import crud, schemas
 
 
 def test_create_store(test_data, test_db_session):

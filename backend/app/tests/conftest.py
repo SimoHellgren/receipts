@@ -8,10 +8,10 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database, drop_database
 from fastapi.testclient import TestClient
 
-from backend.api import app
-from backend.db.base_class import Base
-from backend.dependencies import get_db
-from backend import models
+from backend.app.api import app
+from backend.app.db.base_class import Base
+from backend.app.dependencies import get_db
+from backend.app import models
 
 
 load_dotenv()

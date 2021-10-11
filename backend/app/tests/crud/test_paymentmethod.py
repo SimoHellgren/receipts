@@ -1,4 +1,4 @@
-from backend import crud, schemas
+from backend.app import crud, schemas
 
 
 def test_create_paymentmethod(test_db_session):

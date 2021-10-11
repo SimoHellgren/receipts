@@ -3,8 +3,8 @@ from typing import Any, List
 from sqlalchemy.orm import Session
 
 from .base import CRUDBase
-from backend.models import Receiptline as ReceiptlineModel
-from backend.schemas import Receiptline as ReceiptlineSchema, ReceiptlineCreate as ReceiptlineCreateSchema
+from backend.app.models import Receiptline as ReceiptlineModel
+from backend.app.schemas import Receiptline as ReceiptlineSchema, ReceiptlineCreate as ReceiptlineCreateSchema
 
 class CRUDReceiptline(CRUDBase[ReceiptlineModel, ReceiptlineCreateSchema, ReceiptlineSchema]):
     def get_by_receipt(self, db: Session, receipt_id: Any) -> List[ReceiptlineModel]:

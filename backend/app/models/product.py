@@ -1,11 +1,11 @@
 from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import Text
 
-from backend.db.base_class import Base
+from backend.app.db.base_class import Base
 
 
-class Chain(Base):
-    __tablename__ = 'chain'
+class Product(Base):
+    __tablename__ = 'product'
 
     id = Column(Text, primary_key=True)
     name = Column(Text)

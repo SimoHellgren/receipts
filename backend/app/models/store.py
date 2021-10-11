@@ -1,7 +1,7 @@
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import Text
 
-from backend.db.base_class import Base
+from backend.app.db.base_class import Base
 
 
 class Store(Base):

@@ -1,6 +1,6 @@
 import pytest
 
-from backend import crud, schemas
+from backend.app import crud, schemas
 
 
 def test_get_receiptlines(test_data, test_db_session):
