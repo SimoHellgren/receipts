@@ -1,4 +1,5 @@
 aiofiles==0.7.0
+alembic==1.7.4
 aniso8601==7.0.0
 async-exit-stack==1.0.1
 async-generator==1.10
@@ -19,10 +20,13 @@ graphql-relay==2.0.1
 greenlet==1.1.1
 h11==0.12.0
 idna==3.2
+importlib-metadata==4.8.1
+importlib-resources==5.2.2
 iniconfig==1.1.1
 itsdangerous==1.1.0
 Jinja2==2.11.3
 jmespath==0.10.0
+Mako==1.1.5
 MarkupSafe==2.0.1
 orjson==3.6.3
 packaging==21.0
@@ -51,3 +55,4 @@ urllib3==1.26.4
 uvicorn==0.13.4
 watchgod==0.7
 websockets==8.1
+zipp==3.6.0
