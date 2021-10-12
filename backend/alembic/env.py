@@ -1,6 +1,7 @@
 import os
 from logging.config import fileConfig
 
+from dotenv import load_dotenv
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
@@ -18,7 +19,7 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from backend.app.db.base_class import Base
+from backend.app.db.base import Base
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
@@ -27,7 +28,15 @@ target_metadata = Base.metadata
 # ... etc.
 
 def get_db_uri():
-    return os.getenv['DB_URI']
+    # pick dev db if specified
+    mode = context.get_x_argument(as_dictionary=True).get('mode', 'prod')
+
+    if mode == 'dev':
+        env_var = 'DEV_DB_URI'
+    else:
+        env_var = 'DB_URI'
+
+    return os.getenv(env_var)
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
@@ -41,6 +50,7 @@ def run_migrations_offline():
     script output.
 
     """
+    load_dotenv()
     url = get_db_uri()
     context.configure(
         url=url,
@@ -60,6 +70,7 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
+    load_dotenv()
     configuration = config.get_section(config.config_ini_section)
     configuration['sqlalchemy.url'] = get_db_uri()
     connectable = engine_from_config(
@@ -70,7 +81,8 @@ def run_migrations_online():
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection, target_metadata=target_metadata,
+            compare_type=True
         )
 
         with context.begin_transaction():
