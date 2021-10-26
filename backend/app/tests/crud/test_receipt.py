@@ -29,7 +29,7 @@ def test_create_receipt(test_data, test_db_session):
         datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
         store_id=test_store.id,
         paymentmethod_id=test_paymentmethod.id,
-        total=123.123,
+        total=10059,
         reprint='Välkommen åter!',
         etag='Q29uZ3JhdGlvbiwgeW91IGRvbmUgaXQh'
     )
@@ -56,7 +56,7 @@ def test_update_receipt(test_data, test_db_session):
         datetime=datetime(2021, 1, 2, 0, 0, 0, 0),
         store_id=test_receipt.store_id,
         paymentmethod_id=test_receipt.paymentmethod_id,
-        total=321.123,
+        total=32101,
         reprint='Hej då, tack för idag',
         etag='Q0FUUzogQUxMIFlPVVIgQkFTRSBBUkUgQkVMT05HIFRPIFVT'
     )
