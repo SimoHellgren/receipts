@@ -59,6 +59,25 @@ def test_post(client, test_data):
     assert data == receipt_in
 
 
+def test_post_float_total_fails(client, test_data):
+    '''We don't want floats flying in, because the DB has integers.'''
+    test_store = test_data['store']
+    test_paymentmethod = test_data['paymentmethod']
+    
+    receipt_in = {
+        'id': 'test_receipt',
+        'datetime': str(datetime(2021, 1, 1, 0, 0, 0, 0, tzinfo=timezone.utc)),
+        'store_id': test_store.id,
+        'paymentmethod_id': test_paymentmethod.id,
+        'total': 123.123,
+        'reprint': 'Välkommen åter!',
+        'etag': 'Q29uZ3JhdGlvbiwgeW91IGRvbmUgaXQh'
+    }
+
+    response = client.post('/receipts/', json=receipt_in)
+
+    assert response.status_code == 422
+
 def test_put_new(client, test_data):
     test_store = test_data['store']
     test_paymentmethod = test_data['paymentmethod']
