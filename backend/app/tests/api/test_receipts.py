@@ -41,7 +41,7 @@ def test_post(client, test_data):
         'datetime': str(datetime(2021, 1, 1, 0, 0, 0, 0, tzinfo=timezone.utc)),
         'store_id': test_store.id,
         'paymentmethod_id': test_paymentmethod.id,
-        'total': 123.123,
+        'total': 12323,
         'reprint': 'Välkommen åter!',
         'etag': 'Q29uZ3JhdGlvbiwgeW91IGRvbmUgaXQh'
     }
@@ -87,7 +87,7 @@ def test_put_new(client, test_data):
         'datetime': str(datetime(2021, 1, 1, 0, 0, 0, 0, tzinfo=timezone.utc)),
         'store_id': test_store.id,
         'paymentmethod_id': test_paymentmethod.id,
-        'total': 123.123,
+        'total': 12323,
         'reprint': 'Välkommen åter!',
         'etag': 'Q29uZ3JhdGlvbiwgeW91IGRvbmUgaXQh'
     }
@@ -115,7 +115,7 @@ def test_put_existing(client, test_data):
         'datetime': str(datetime(2021, 1, 1, 0, 0, 0, 0, tzinfo=timezone.utc)),
         'store_id': test_store.id,
         'paymentmethod_id': test_paymentmethod.id,
-        'total': 123.123,
+        'total': 12323,
         'reprint': 'Välkommen åter!',
         'etag': 'Q29uZ3JhdGlvbiwgeW91IGRvbmUgaXQh'
     }
