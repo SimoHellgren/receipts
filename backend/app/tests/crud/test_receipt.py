@@ -18,7 +18,7 @@ def test_get_receipt(test_data, test_db_session):
 
     assert get_receipt.datetime.timestamp() == test_receipt.datetime.timestamp()
     
-    assert pytest.approx(get_receipt.total, test_receipt.total)
+    assert get_receipt.total == test_receipt.total
 
 
 def test_create_receipt(test_data, test_db_session):
@@ -46,7 +46,7 @@ def test_create_receipt(test_data, test_db_session):
     assert db_receipt.datetime.timestamp() == receipt_in.datetime.timestamp() 
         
     # totals approximately equal, since they are floats. Should change to integer amount of cents
-    assert pytest.approx(db_receipt.total, receipt_in.total)
+    assert db_receipt.total == receipt_in.total
 
 
 def test_create_with_float_total_fails(test_data, test_db_session):
@@ -91,6 +91,5 @@ def test_update_receipt(test_data, test_db_session):
     # compare timestamps to avoid timezones for now, though should probably do something more elegant
     assert new_receipt.datetime.timestamp() == receipt_in.datetime.timestamp() 
         
-    # totals approximately equal, since they are floats. Should change to integer amount of cents
-    assert pytest.approx(new_receipt.total, receipt_in.total)
+    assert new_receipt.total == receipt_in.total
     

@@ -25,7 +25,7 @@ def test_get_one(client, test_data):
     assert data['reprint'] == test_receipt.reprint
     assert data['store_id'] == test_receipt.store_id
     assert data['paymentmethod_id'] == test_receipt.paymentmethod_id
-    assert pytest.approx(data['total'], test_receipt.total)
+    assert data['total'] == test_receipt.total
     
     data_timestamp = datetime.strptime(data['datetime'], '%Y-%m-%dT%H:%M:%S%z').timestamp()
 
