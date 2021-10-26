@@ -19,8 +19,8 @@ def test_get(client, test_data):
     assert data1['product_id'] == test_line1.product_id
     assert data2['product_id'] == test_line2.product_id
 
-    assert pytest.approx(data1['amount'], test_line1.amount)
-    assert pytest.approx(data2['amount'], test_line2.amount)
+    assert data1['amount'] - test_line1.amount == pytest.approx(0)
+    assert data2['amount'] - test_line2.amount == pytest.approx(0)
 
 
 def test_post(client, test_data):
