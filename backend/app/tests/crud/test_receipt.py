@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import pytest
+import pydantic
 
 from backend.app import crud, schemas
 
@@ -46,6 +47,23 @@ def test_create_receipt(test_data, test_db_session):
         
     # totals approximately equal, since they are floats. Should change to integer amount of cents
     assert pytest.approx(db_receipt.total, receipt_in.total)
+
+
+def test_create_with_float_total_fails(test_data, test_db_session):
+    '''Shouldn't be able to create a receipt with a float-total'''
+    test_store = test_data['store']
+    test_paymentmethod = test_data['paymentmethod']
+    
+    with pytest.raises(pydantic.ValidationError):
+        receipt_in = schemas.ReceiptCreate(
+            id='test_receipt',
+            datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
+            store_id=test_store.id,
+            paymentmethod_id=test_paymentmethod.id,
+            total=100.59,
+            reprint='Välkommen åter!',
+            etag='Q29uZ3JhdGlvbiwgeW91IGRvbmUgaXQh'
+        )
 
 
 def test_update_receipt(test_data, test_db_session):
