@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, status
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
@@ -13,17 +15,17 @@ router = APIRouter(
     tags=['Paymentmethods']
 )
 
-@router.get('/')
+@router.get('/', response_model=List[schemas.Paymentmethod])
 def get_paymentmethods(db: Session = Depends(get_db)):
     return crud.paymentmethod.get_many(db)
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
+@router.post('/', response_model=schemas.Paymentmethod, status_code=status.HTTP_201_CREATED)
 def create_paymentmethod(paymentmethod: schemas.Paymentmethod, db: Session = Depends(get_db)):
     return crud.paymentmethod.create(db, obj_in=paymentmethod)
 
 
-@router.put('/{paymentmethod_id}')
+@router.put('/{paymentmethod_id}', response_model=schemas.Paymentmethod)
 def update_paymentmethod(paymentmethod_id: str, paymentmethod: schemas.Paymentmethod, db: Session = Depends(get_db)):
     db_obj = crud.paymentmethod.get(db, paymentmethod_id)
 

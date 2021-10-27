@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, status
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
@@ -13,22 +15,22 @@ router = APIRouter(
     tags=['Stores']
 )
 
-@router.get('/')
+@router.get('/', response_model=List[schemas.Store])
 def get_stores(db: Session = Depends(get_db)):
     return crud.store.get_many(db)
 
 
-@router.get('/{store_id}')
+@router.get('/{store_id}', response_model=schemas.Store)
 def get_store(store_id: str, db = Depends(get_db)):
     return crud.store.get(db, store_id)
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
+@router.post('/', response_model=schemas.Store, status_code=status.HTTP_201_CREATED)
 def create_store(store: schemas.StoreCreate, db: Session = Depends(get_db)):
     return crud.store.create(db, obj_in=store)
 
 
-@router.put('/{store_id}')
+@router.put('/{store_id}', response_model=schemas.Store)
 def update_store(store_id: str, store: schemas.Store, db: Session = Depends(get_db)):
     db_store = crud.store.get(db, store_id)
 
