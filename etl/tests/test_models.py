@@ -1,4 +1,8 @@
-'''Tests for ensuring that models match the API'''
+'''Tests for ensuring that models match the API.
+    Models are validated against the locally stored openapi JSON file, which the API we're using kindly provides.
+    There is a separate test that checks whether the openapi schema of the API matches what we have, i.e. whether our
+    information about the API is up-to-date.
+'''
 
 from etl.models import ReceiptCreate
 
@@ -22,7 +26,6 @@ def assert_schema_equality(a, b):
     # so we really only care about whether the sets are equal
     required_a = set(a['required'])
     required_b = set(b['required'])
-
 
     assert required_a == required_b
 
