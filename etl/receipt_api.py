@@ -20,4 +20,4 @@ class ReceiptAPI(requests.Session):
 
 
     def put_receipt(self, receipt: models.ReceiptCreate):
-        return self.put('/receipts', data=receipt.json())
+        return self.put(f'/receipts/{receipt.id}', data=receipt.json())
