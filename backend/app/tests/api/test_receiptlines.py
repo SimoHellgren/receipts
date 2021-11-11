@@ -1,5 +1,3 @@
-import pytest
-
 def test_get(client, test_data):
     receipt_id = test_data['receipt'].id
     test_line1 = test_data['line1'] 
@@ -19,8 +17,8 @@ def test_get(client, test_data):
     assert data1['product_id'] == test_line1.product_id
     assert data2['product_id'] == test_line2.product_id
 
-    assert data1['amount'] - test_line1.amount == pytest.approx(0)
-    assert data2['amount'] - test_line2.amount == pytest.approx(0)
+    assert data1['amount'] == test_line1.amount
+    assert data2['amount'] == test_line2.amount
 
 
 def test_post(client, test_data):
