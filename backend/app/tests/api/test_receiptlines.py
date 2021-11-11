@@ -27,7 +27,7 @@ def test_post(client, test_data):
     receipt_id = test_data['receipt'].id
     product_id = test_data['product'].id
 
-    receiptline_in = {'receipt_id': receipt_id, 'linenumber': 3, 'product_id': product_id, 'amount': 1.11}
+    receiptline_in = {'receipt_id': receipt_id, 'linenumber': 3, 'product_id': product_id, 'amount': 111}
 
     response = client.post(f'/receipts/{receipt_id}/lines', json=receiptline_in)
 
@@ -43,7 +43,7 @@ def test_put_new_for_receipt(client, test_data):
     product_id = test_data['product'].id
     linenumber = 3
 
-    receiptline_in = {'receipt_id': receipt_id, 'linenumber': linenumber, 'product_id': product_id, 'amount': 1.11}
+    receiptline_in = {'receipt_id': receipt_id, 'linenumber': linenumber, 'product_id': product_id, 'amount': 111}
 
     response = client.put(f'/receipts/{receipt_id}/lines/{linenumber}', json=receiptline_in)
 
@@ -60,7 +60,7 @@ def test_put_existing_for_receipt(client, test_data):
     product_id = test_line.product_id
     linenumber = test_line.linenumber
 
-    receiptline_in = {'receipt_id': receipt_id, 'linenumber': linenumber, 'product_id': product_id, 'amount': 100.11}
+    receiptline_in = {'receipt_id': receipt_id, 'linenumber': linenumber, 'product_id': product_id, 'amount': 10011}
 
     response = client.put(f'/receipts/{receipt_id}/lines/{linenumber}', json=receiptline_in)
 
