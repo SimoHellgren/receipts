@@ -33,8 +33,8 @@ def make_test_data():
             etag='iuyweriuyweriuyhsdkjhskjfh'
         ),
         'product': models.Product(id='PRODUCT_1', name='Product 1'),
-        'line1': models.Receiptline(receipt_id='RECEIPT_1', linenumber=1, product_id='PRODUCT_1', amount=1.15),
-        'line2': models.Receiptline(receipt_id='RECEIPT_1', linenumber=2, product_id='PRODUCT_1', amount=1.15)
+        'line1': models.Receiptline(receipt_id='RECEIPT_1', linenumber=1, product_id='PRODUCT_1', amount=115),
+        'line2': models.Receiptline(receipt_id='RECEIPT_1', linenumber=2, product_id='PRODUCT_1', amount=115)
     }
 
 @pytest.fixture

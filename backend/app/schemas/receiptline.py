@@ -1,10 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictInt
 
 
 class ReceiptlineBase(BaseModel):
     linenumber: int
     product_id: str
-    amount: float
+    amount: StrictInt
     receipt_id: str
 
 

@@ -22,5 +22,12 @@ def test_data():
             reprint='This is where a reprint would be',
             etag='kjdflgkjiugvökjbsöh',
             store_id='k-market'
+        ),
+
+        'receiptline': models.Receiptline(
+            linenumber=1,
+            product_id='test_product',
+            amount=100,
+            receipt_id = 'receipt_id'
         )
     }

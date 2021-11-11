@@ -1018,7 +1018,7 @@
           },
           "amount": {
             "title": "Amount",
-            "type": "number"
+            "type": "integer"
           },
           "receipt_id": {
             "title": "Receipt Id",
@@ -1046,7 +1046,7 @@
           },
           "amount": {
             "title": "Amount",
-            "type": "number"
+            "type": "integer"
           },
           "receipt_id": {
             "title": "Receipt Id",
