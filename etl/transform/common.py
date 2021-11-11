@@ -5,12 +5,14 @@ from itertools import takewhile
 from dataclasses import dataclass, field
 from typing import Iterable
 
+
 @dataclass
 class ReceiptItemLine:
     '''An item line on a receipt'''
     line_num: int
     product: str
-    price: float
+    price: int
+
 
 @dataclass
 class Receipt:
@@ -47,11 +49,12 @@ def extract_payment_method(reprint: str, default: str = 'CASH') -> str:
     return next(iter(cards), default)
 
 
-def parse_price(price: str) -> float:
+def parse_price(price: str) -> int:
     if price.endswith('-'): # move negative sign to front
         price = f'-{price[:-1]}'
     
-    return float(price.replace(',', '.'))
+    # return an integer amount of cents
+    return int(float(price.replace(',', '.')) * 100)
 
 
 def extract_items(reprint: str) -> Iterable[ReceiptItemLine]:
