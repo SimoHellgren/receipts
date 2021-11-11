@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictInt
 
 class Receiptline(BaseModel):
     linenumber: int
     product_id: str
-    amount: int
+    amount: StrictInt
     receipt_id: str
