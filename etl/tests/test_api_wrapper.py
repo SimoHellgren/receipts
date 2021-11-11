@@ -22,7 +22,7 @@ from etl.receipt_api import ReceiptAPI
 from .utils import openapi_component_schema_match, check_path_match, traverse_nested_dict, find
 
 
-def test_path_exists(mocker, test_data, api_schema):
+def test_put_receipt(mocker, test_data, api_schema):
     '''a test for the existence of the path that we're sending api requeqests at
         check for:
          -path exists
