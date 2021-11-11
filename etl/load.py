@@ -63,7 +63,7 @@ def load(data: Iterable[ParsingResult]):
                 receipt_id=receipt.id,
                 linenumber=line.line_num,
                 product_id=line.product,
-                amount=line.product
+                amount=line.price
                 )
             )
 
