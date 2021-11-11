@@ -27,7 +27,7 @@ def make_test_data():
             datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
             store_id='STORE_1',
             paymentmethod_id='CASH',
-            total=11.11,
+            total=1111,
             id='RECEIPT_1',
             reprint='Test reprint',
             etag='iuyweriuyweriuyhsdkjhskjfh'

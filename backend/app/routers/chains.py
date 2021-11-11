@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -13,17 +15,17 @@ router = APIRouter(
     tags=['Chains']
 )
 
-@router.get('/')
+@router.get('/', response_model=List[schemas.Chain])
 def get_chains(db: Session = Depends(get_db)):
     return crud.chain.get_many(db)
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
+@router.post('/', response_model=schemas.Chain, status_code=status.HTTP_201_CREATED)
 def create_chain(chain: schemas.Chain, db: Session = Depends(get_db)):
     return crud.chain.create(db, obj_in=chain)
 
 
-@router.put('/{chain_id}/')
+@router.put('/{chain_id}/', response_model=schemas.Chain)
 def update_chain(chain: schemas.Chain, db: Session = Depends(get_db)):
     '''Idempotent PUT operation: if resource already exists, it is updated. If not, it gets created'''
     # Chain exists already -> update

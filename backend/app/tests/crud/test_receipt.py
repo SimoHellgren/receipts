@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import pytest
+import pydantic
 
 from backend.app import crud, schemas
 
@@ -17,7 +18,7 @@ def test_get_receipt(test_data, test_db_session):
 
     assert get_receipt.datetime.timestamp() == test_receipt.datetime.timestamp()
     
-    assert pytest.approx(get_receipt.total, test_receipt.total)
+    assert get_receipt.total == test_receipt.total
 
 
 def test_create_receipt(test_data, test_db_session):
@@ -29,7 +30,7 @@ def test_create_receipt(test_data, test_db_session):
         datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
         store_id=test_store.id,
         paymentmethod_id=test_paymentmethod.id,
-        total=123.123,
+        total=10059,
         reprint='Välkommen åter!',
         etag='Q29uZ3JhdGlvbiwgeW91IGRvbmUgaXQh'
     )
@@ -45,7 +46,24 @@ def test_create_receipt(test_data, test_db_session):
     assert db_receipt.datetime.timestamp() == receipt_in.datetime.timestamp() 
         
     # totals approximately equal, since they are floats. Should change to integer amount of cents
-    assert pytest.approx(db_receipt.total, receipt_in.total)
+    assert db_receipt.total == receipt_in.total
+
+
+def test_create_with_float_total_fails(test_data, test_db_session):
+    '''Shouldn't be able to create a receipt with a float-total'''
+    test_store = test_data['store']
+    test_paymentmethod = test_data['paymentmethod']
+    
+    with pytest.raises(pydantic.ValidationError):
+        receipt_in = schemas.ReceiptCreate(
+            id='test_receipt',
+            datetime=datetime(2021, 1, 1, 0, 0, 0, 0),
+            store_id=test_store.id,
+            paymentmethod_id=test_paymentmethod.id,
+            total=100.59,
+            reprint='Välkommen åter!',
+            etag='Q29uZ3JhdGlvbiwgeW91IGRvbmUgaXQh'
+        )
 
 
 def test_update_receipt(test_data, test_db_session):
@@ -56,7 +74,7 @@ def test_update_receipt(test_data, test_db_session):
         datetime=datetime(2021, 1, 2, 0, 0, 0, 0),
         store_id=test_receipt.store_id,
         paymentmethod_id=test_receipt.paymentmethod_id,
-        total=321.123,
+        total=32101,
         reprint='Hej då, tack för idag',
         etag='Q0FUUzogQUxMIFlPVVIgQkFTRSBBUkUgQkVMT05HIFRPIFVT'
     )
@@ -73,6 +91,5 @@ def test_update_receipt(test_data, test_db_session):
     # compare timestamps to avoid timezones for now, though should probably do something more elegant
     assert new_receipt.datetime.timestamp() == receipt_in.datetime.timestamp() 
         
-    # totals approximately equal, since they are floats. Should change to integer amount of cents
-    assert pytest.approx(new_receipt.total, receipt_in.total)
+    assert new_receipt.total == receipt_in.total
     

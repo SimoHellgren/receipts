@@ -1,33 +1,22 @@
 '''Load data into a destination'''
 
 import os
-import requests
 from typing import Iterable
 
 from dotenv import load_dotenv
+from etl.receipt_api import ReceiptAPI
+from etl.models import ReceiptCreate
 
 from etl.transform.common import ParsingResult
 
 
 load_dotenv()
 
+api = ReceiptAPI(os.environ['API_URL'])
 
-class BaseURLSession(requests.Session):
-    '''A BaseURLSession works exactly like a requests.Session, except that it
-        prepends a baseurl into every url it requests
-    '''
-    def __init__(self, baseurl, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.baseurl = baseurl
-
-    def request(self, method, url, *args, **kwargs):
-        return super().request(method, self.baseurl + url, *args, **kwargs)
-
-
-api = BaseURLSession(os.environ['API_URL'])
 
 def load(data: Iterable[ParsingResult]):
-    '''Load data throuhg API. To save some requests, first gets the unique chains, stores etc. in the data, so each 
+    '''Load data through API. To save some requests, first gets the unique chains, stores etc. in the data, so each 
        only gets sent once. In case there were conflicting data present, the last one gets sent (which would happen
        also if we made separate requests).
 
@@ -56,15 +45,16 @@ def load(data: Iterable[ParsingResult]):
         stores[d.store_id] = {'id': d.store_id, 'name': d.store_id, 'chain_id': d.chain_id}
         paymentmethods[d.receipt_paymentmethod] = {'id': d.receipt_paymentmethod, 'payer': None} 
 
-        receipts.append({
-                'id': d.receipt_id,
-                'datetime': d.receipt_datetime,
-                'paymentmethod_id': d.receipt_paymentmethod,
-                'total': d.receipt_total,
-                'reprint': d.receipt_reprint,
-                'etag': d.etag,
-                'store_id': d.store_id
-            })
+        receipts.append(ReceiptCreate(
+            id=d.receipt_id,
+            datetime=d.receipt_datetime,
+            paymentmethod_id=d.receipt_paymentmethod,
+            total=d.receipt_total,
+            reprint=d.receipt_reprint,
+            etag=d.etag,
+            store_id=d.store_id
+            )
+        )
 
         for line in d.receipt_items:
             products[line.product] = {'id': line.product, 'name': None}
@@ -98,7 +88,7 @@ def load(data: Iterable[ParsingResult]):
         api.post('/products', json=product)
 
     for receipt in receipts:
-        api.put(f"/receipts/{receipt['id']}", json=receipt)
+        api.put_receipt(receipt)
     
     for line in lines:
         api.put(f"/receipts/{line['receipt_id']}/lines/{line['linenumber']}", json=line)

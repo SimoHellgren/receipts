@@ -9,7 +9,7 @@ def transform(s3obj) -> ParsingResult:
     data = json.load(s3obj.get()['Body'])
     
     receipt_id = data['eReceiptId'] 
-    total = data['transaction']['totalAmount']
+    total = int(data['transaction']['totalAmount'] * 100)
     reprint = data['receiptDetails']['eReceiptReprintData']
     datetime = data['transaction']['transactionTimestamp']
     

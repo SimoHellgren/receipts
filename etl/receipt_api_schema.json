@@ -1,0 +1,1131 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/receipts/": {
+      "get": {
+        "tags": [
+          "Receipts"
+        ],
+        "summary": "Get Receipts",
+        "operationId": "get_receipts_receipts__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Receipts Receipts  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Receipt"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Receipts"
+        ],
+        "summary": "Create Receipt",
+        "operationId": "create_receipt_receipts__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/receipts/{receipt_id}": {
+      "get": {
+        "tags": [
+          "Receipts"
+        ],
+        "summary": "Get Receipt",
+        "operationId": "get_receipt_receipts__receipt_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Receipt Id",
+              "type": "string"
+            },
+            "name": "receipt_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Receipts"
+        ],
+        "summary": "Update Receipt",
+        "operationId": "update_receipt_receipts__receipt_id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Receipt Id",
+              "type": "string"
+            },
+            "name": "receipt_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Receipt"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/receipts/{receipt_id}/lines": {
+      "get": {
+        "tags": [
+          "Receipts"
+        ],
+        "summary": "Get Receipt Lines",
+        "operationId": "get_receipt_lines_receipts__receipt_id__lines_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Receipt Id",
+              "type": "string"
+            },
+            "name": "receipt_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Receipt Lines Receipts  Receipt Id  Lines Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Receiptline"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Receipts"
+        ],
+        "summary": "Create Receipt Line",
+        "operationId": "create_receipt_line_receipts__receipt_id__lines_post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Receipt Id",
+              "type": "string"
+            },
+            "name": "receipt_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptlineCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receiptline"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/receipts/{receipt_id}/lines/{linenumber}": {
+      "put": {
+        "tags": [
+          "Receipts"
+        ],
+        "summary": "Update Receipts Line",
+        "operationId": "update_receipts_line_receipts__receipt_id__lines__linenumber__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Receipt Id",
+              "type": "string"
+            },
+            "name": "receipt_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Linenumber",
+              "type": "integer"
+            },
+            "name": "linenumber",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Receiptline"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receiptline"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get Products",
+        "operationId": "get_products_products__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Products Products  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Create Product",
+        "operationId": "create_product_products__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{product_id}": {
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Update Product",
+        "operationId": "update_product_products__product_id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Product Id",
+              "type": "string"
+            },
+            "name": "product_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/": {
+      "get": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Get Stores",
+        "operationId": "get_stores_stores__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Stores Stores  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Store"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Create Store",
+        "operationId": "create_store_stores__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/{store_id}": {
+      "get": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Get Store",
+        "operationId": "get_store_stores__store_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Store Id",
+              "type": "string"
+            },
+            "name": "store_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Update Store",
+        "operationId": "update_store_stores__store_id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Store Id",
+              "type": "string"
+            },
+            "name": "store_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Store"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chains/": {
+      "get": {
+        "tags": [
+          "Chains"
+        ],
+        "summary": "Get Chains",
+        "operationId": "get_chains_chains__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Chains Chains  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Chain"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Chains"
+        ],
+        "summary": "Create Chain",
+        "operationId": "create_chain_chains__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Chain"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Chain"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chains/{chain_id}/": {
+      "put": {
+        "tags": [
+          "Chains"
+        ],
+        "summary": "Update Chain",
+        "description": "Idempotent PUT operation: if resource already exists, it is updated. If not, it gets created",
+        "operationId": "update_chain_chains__chain_id___put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Chain"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Chain"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/paymentmethods/": {
+      "get": {
+        "tags": [
+          "Paymentmethods"
+        ],
+        "summary": "Get Paymentmethods",
+        "operationId": "get_paymentmethods_paymentmethods__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Paymentmethods Paymentmethods  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Paymentmethod"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Paymentmethods"
+        ],
+        "summary": "Create Paymentmethod",
+        "operationId": "create_paymentmethod_paymentmethods__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Paymentmethod"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paymentmethod"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/paymentmethods/{paymentmethod_id}": {
+      "put": {
+        "tags": [
+          "Paymentmethods"
+        ],
+        "summary": "Update Paymentmethod",
+        "operationId": "update_paymentmethod_paymentmethods__paymentmethod_id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Paymentmethod Id",
+              "type": "string"
+            },
+            "name": "paymentmethod_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Paymentmethod"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paymentmethod"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Chain": {
+        "title": "Chain",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "description": "Not implementing separate model for creation, as ID needs to always be provided,\nat least as long as the DB relies on system keys as PKs. If and when this changes\nto generating uniform keys, this model should change as well."
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "Paymentmethod": {
+        "title": "Paymentmethod",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "payer": {
+            "title": "Payer",
+            "type": "string"
+          }
+        }
+      },
+      "Product": {
+        "title": "Product",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "ProductCreate": {
+        "title": "ProductCreate",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          }
+        }
+      },
+      "Receipt": {
+        "title": "Receipt",
+        "required": [
+          "datetime",
+          "store_id",
+          "paymentmethod_id",
+          "total",
+          "id",
+          "reprint",
+          "etag"
+        ],
+        "type": "object",
+        "properties": {
+          "datetime": {
+            "title": "Datetime",
+            "type": "string",
+            "format": "date-time"
+          },
+          "store_id": {
+            "title": "Store Id",
+            "type": "string"
+          },
+          "paymentmethod_id": {
+            "title": "Paymentmethod Id",
+            "type": "string"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "reprint": {
+            "title": "Reprint",
+            "type": "string"
+          },
+          "etag": {
+            "title": "Etag",
+            "type": "string"
+          }
+        }
+      },
+      "ReceiptCreate": {
+        "title": "ReceiptCreate",
+        "required": [
+          "datetime",
+          "store_id",
+          "paymentmethod_id",
+          "total",
+          "id",
+          "reprint",
+          "etag"
+        ],
+        "type": "object",
+        "properties": {
+          "datetime": {
+            "title": "Datetime",
+            "type": "string",
+            "format": "date-time"
+          },
+          "store_id": {
+            "title": "Store Id",
+            "type": "string"
+          },
+          "paymentmethod_id": {
+            "title": "Paymentmethod Id",
+            "type": "string"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "reprint": {
+            "title": "Reprint",
+            "type": "string"
+          },
+          "etag": {
+            "title": "Etag",
+            "type": "string"
+          }
+        }
+      },
+      "Receiptline": {
+        "title": "Receiptline",
+        "required": [
+          "linenumber",
+          "product_id",
+          "amount",
+          "receipt_id"
+        ],
+        "type": "object",
+        "properties": {
+          "linenumber": {
+            "title": "Linenumber",
+            "type": "integer"
+          },
+          "product_id": {
+            "title": "Product Id",
+            "type": "string"
+          },
+          "amount": {
+            "title": "Amount",
+            "type": "number"
+          },
+          "receipt_id": {
+            "title": "Receipt Id",
+            "type": "string"
+          }
+        }
+      },
+      "ReceiptlineCreate": {
+        "title": "ReceiptlineCreate",
+        "required": [
+          "linenumber",
+          "product_id",
+          "amount",
+          "receipt_id"
+        ],
+        "type": "object",
+        "properties": {
+          "linenumber": {
+            "title": "Linenumber",
+            "type": "integer"
+          },
+          "product_id": {
+            "title": "Product Id",
+            "type": "string"
+          },
+          "amount": {
+            "title": "Amount",
+            "type": "number"
+          },
+          "receipt_id": {
+            "title": "Receipt Id",
+            "type": "string"
+          }
+        }
+      },
+      "Store": {
+        "title": "Store",
+        "required": [
+          "id",
+          "name",
+          "chain_id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "chain_id": {
+            "title": "Chain Id",
+            "type": "string"
+          }
+        }
+      },
+      "StoreCreate": {
+        "title": "StoreCreate",
+        "required": [
+          "id",
+          "name",
+          "chain_id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "chain_id": {
+            "title": "Chain Id",
+            "type": "string"
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

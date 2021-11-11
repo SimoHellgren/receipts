@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -6,7 +8,7 @@ class ProductBase(BaseModel):
 
 
 class Product(ProductBase):
-    name: str
+    name: Optional[str]
 
     class Config:
         orm_mode = True

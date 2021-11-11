@@ -17,7 +17,7 @@ class ReceiptItemLine:
 class ParsingResult:
     '''A contract / interface between the Transform and Load steps'''
     receipt_id: str
-    receipt_total: str
+    receipt_total: int
     receipt_reprint: str
     receipt_datetime: str
     receipt_paymentmethod: str
