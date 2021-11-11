@@ -69,3 +69,27 @@ def test_put_existing_for_receipt(client, test_data):
     data = response.json()
 
     assert data == receiptline_in
+
+
+def test_post_float_price_fails(client, test_data):
+    receipt_id = test_data['receipt'].id
+    product_id = test_data['product'].id
+    linenumber = 3
+
+    receiptline_in = {'receipt_id': receipt_id, 'linenumber': linenumber, 'product_id': product_id, 'amount': 100.11}
+
+    response = client.post(f'/receipts/{receipt_id}/lines', json=receiptline_in)
+
+    assert response.status_code == 422
+
+
+def test_put_float_price_fails(client, test_data):
+    receipt_id = test_data['receipt'].id
+    product_id = test_data['product'].id
+    linenumber = 3
+
+    receiptline_in = {'receipt_id': receipt_id, 'linenumber': linenumber, 'product_id': product_id, 'amount': 100.11}
+
+    response = client.put(f'/receipts/{receipt_id}/lines/{linenumber}', json=receiptline_in)
+
+    assert response.status_code == 422
