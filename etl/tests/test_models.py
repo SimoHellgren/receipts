@@ -8,13 +8,18 @@ from etl import models
 
 from .utils import openapi_component_schema_match
 
+
+def compare_schema_component_with_model(schema, component_name, model):
+    '''Utility for reuse'''
+    model_schema = schema['components']['schemas'][component_name]
+
+    return openapi_component_schema_match(model_schema, model.schema())
+
+
 def test_receiptcreate(api_schema):
-    model_schema = api_schema['components']['schemas']['ReceiptCreate']
-    
-    assert openapi_component_schema_match(model_schema, models.ReceiptCreate.schema())
+    assert compare_schema_component_with_model(api_schema, 'ReceiptCreate', models.ReceiptCreate)
 
 
 def test_receiptline(api_schema):
-    model_schema = api_schema['components']['schemas']['Receiptline']
+    assert compare_schema_component_with_model(api_schema, 'Receiptline', models.Receiptline)
 
-    assert openapi_component_schema_match(model_schema, models.Receiptline.schema())
