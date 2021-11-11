@@ -21,3 +21,8 @@ class ReceiptAPI(requests.Session):
 
     def put_receipt(self, receipt: models.ReceiptCreate):
         return self.put(f'/receipts/{receipt.id}', data=receipt.json())
+
+
+    def put_receiptline(self, receiptline: models.Receiptline):
+        return self.put(f'/receipts/{receiptline.receipt_id}/lines/{receiptline.linenumber}', data=receiptline.json())
+

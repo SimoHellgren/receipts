@@ -67,3 +67,42 @@ def test_put_receipt(mocker, test_data, api_schema):
 
     # check that data parses
     assert model(**json.loads(data))
+
+
+def test_put_receiptline(mocker, test_data, api_schema):
+    '''Most of the code here is duplicated. Should really TODO this into oblivion.'''
+    api_paths = api_schema['paths']
+    test_receiptline = test_data['receiptline']
+    mocker.patch.object(ReceiptAPI, 'request', return_value='test')
+
+    api = ReceiptAPI('http://localhost/')
+
+    result=api.put_receiptline(test_receiptline)
+
+    call_method, call_path = api.request.call_args.args
+    data = api.request.call_args.kwargs['data']
+
+    # check that there is matching path
+    matching_path = find(lambda p: check_path_match(call_path, p), api_paths)
+
+    assert matching_path
+
+    verb_spec = api_paths[matching_path].get(call_method.lower())
+    
+    # check that HTTP verb is valid
+    assert verb_spec
+
+    # check parameters, data etc
+    
+    # how do we do this in the general case?
+    # and what about things that are not in the request body?
+    body_schema_ref = verb_spec['requestBody']['content']['application/json']['schema']['$ref'].split('/')[1:]
+    body_schema = traverse_nested_dict(body_schema_ref, api_schema)
+
+    # how would this generalize?
+    model = api.put_receiptline.__annotations__.get('receiptline')
+
+    assert openapi_component_schema_match(body_schema, model.schema())
+
+    # check that data parses
+    assert model(**json.loads(data))
