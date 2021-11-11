@@ -2,20 +2,21 @@
 
 import json
 
-from .common import extract_payment_method, extract_items, ParsingResult
+from .common import Receipt, ParsingResult
 
 
 def transform(s3obj) -> ParsingResult:
     '''Transform an S3 ObjectSummary. Perhaps due a renaming and a typehint.'''
 
     data = json.load(s3obj.get()['Body'])
-    receipt_id = data['id']
-    total = int(data['grandAmount'] * 100)
-    reprint = data['receiptReprint']
-    datetime = data['transactionDateTime']
 
-    paymentmethod = extract_payment_method(reprint)
-    items = extract_items(reprint)
+    receipt = Receipt(
+        id = data['id'],
+        total = int(data['grandAmount'] * 100),
+        reprint = data['receiptReprint'],
+        datetime = data['transactionDateTime'],
+    )
+
     store_id = data['businessUnit']['id']
     store_name = data['businessUnit']['name']
 
@@ -24,12 +25,7 @@ def transform(s3obj) -> ParsingResult:
     chain_name = store_name.replace(chainlessname, '').strip()
 
     return ParsingResult(
-        receipt_id=receipt_id,
-        receipt_reprint=reprint,
-        receipt_total=total,
-        receipt_datetime=datetime,
-        receipt_paymentmethod=paymentmethod,
-        receipt_items=items,
+        receipt=receipt,
         store_id=store_id,
         store_name=store_name,
         chain_id=chain_id,

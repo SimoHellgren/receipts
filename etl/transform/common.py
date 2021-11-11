@@ -2,7 +2,7 @@
 
 import re
 from itertools import takewhile
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Iterable
 
 @dataclass
@@ -12,16 +12,24 @@ class ReceiptItemLine:
     product: str
     price: float
 
+@dataclass
+class Receipt:
+    id: str
+    total: int
+    reprint: str
+    datetime: str
+    paymentmethod: str = field(init=False)
+    items: Iterable[ReceiptItemLine] = field(init=False)
+
+    def __post_init__(self):
+        self.paymentmethod = extract_payment_method(self.reprint)
+        self.items = extract_items(self.reprint)
+
 
 @dataclass
 class ParsingResult:
     '''A contract / interface between the Transform and Load steps'''
-    receipt_id: str
-    receipt_total: int
-    receipt_reprint: str
-    receipt_datetime: str
-    receipt_paymentmethod: str
-    receipt_items: Iterable[ReceiptItemLine] 
+    receipt: Receipt 
     chain_id: str
     chain_name: str
     store_id: str

@@ -43,23 +43,24 @@ def load(data: Iterable[ParsingResult]):
     for d in data:
         chains[d.chain_id] = {'id': d.chain_id, 'name': d.chain_name}
         stores[d.store_id] = {'id': d.store_id, 'name': d.store_id, 'chain_id': d.chain_id}
-        paymentmethods[d.receipt_paymentmethod] = {'id': d.receipt_paymentmethod, 'payer': None} 
+        paymentmethods[d.receipt.paymentmethod] = {'id': d.receipt.paymentmethod, 'payer': None} 
 
+        receipt = d.receipt
         receipts.append(ReceiptCreate(
-            id=d.receipt_id,
-            datetime=d.receipt_datetime,
-            paymentmethod_id=d.receipt_paymentmethod,
-            total=d.receipt_total,
-            reprint=d.receipt_reprint,
+            id=receipt.id,
+            datetime=receipt.datetime,
+            paymentmethod_id=receipt.paymentmethod,
+            total=receipt.total,
+            reprint=receipt.total,
             etag=d.etag,
             store_id=d.store_id
             )
         )
 
-        for line in d.receipt_items:
+        for line in receipt.items:
             products[line.product] = {'id': line.product, 'name': None}
             lines.append({
-                'receipt_id': d.receipt_id,
+                'receipt_id': receipt.id,
                 'linenumber': line.line_num,
                 'product_id': line.product,
                 'amount': line.price
