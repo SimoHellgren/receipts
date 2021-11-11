@@ -4,11 +4,17 @@
     information about the API is up-to-date.
 '''
 
-from etl.models import ReceiptCreate
+from etl import models
 
 from .utils import openapi_component_schema_match
 
 def test_receiptcreate(api_schema):
     model_schema = api_schema['components']['schemas']['ReceiptCreate']
     
-    assert openapi_component_schema_match(model_schema, ReceiptCreate.schema())
+    assert openapi_component_schema_match(model_schema, models.ReceiptCreate.schema())
+
+
+def test_receiptline(api_schema):
+    model_schema = api_schema['components']['schemas']['Receiptline']
+
+    assert openapi_component_schema_match(model_schema, models.Receiptline.schema())
