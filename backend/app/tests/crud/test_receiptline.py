@@ -28,7 +28,7 @@ def test_create_receiptlines(test_data, test_db_session):
         receipt_id=test_receipt.id,
         linenumber=3,
         product_id=test_product.id,
-        amount=1.11
+        amount=111
     )
 
     db_receiptline = crud.receiptline.create(test_db_session, obj_in=receiptline_in)
@@ -46,7 +46,7 @@ def test_update_receiptline(test_data, test_db_session):
         receipt_id=test_receipt.id,
         linenumber=3,
         product_id=test_product.id,
-        amount=10.11
+        amount=1011
     )
 
     db_receiptline = crud.receiptline.create(test_db_session, obj_in=receiptline_in)
