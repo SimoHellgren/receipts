@@ -5,7 +5,7 @@ from typing import Iterable
 
 from dotenv import load_dotenv
 from etl.receipt_api import ReceiptAPI
-from etl.models import ReceiptCreate
+from etl.models import ReceiptCreate, Receiptline
 
 from etl.transform.common import ParsingResult
 
@@ -59,12 +59,13 @@ def load(data: Iterable[ParsingResult]):
 
         for line in receipt.items:
             products[line.product] = {'id': line.product, 'name': None}
-            lines.append({
-                'receipt_id': receipt.id,
-                'linenumber': line.line_num,
-                'product_id': line.product,
-                'amount': line.price
-                })
+            lines.append(Receiptline(
+                receipt_id=receipt.id,
+                linenumber=line.line_num,
+                product_id=line.product,
+                amount=line.product
+                )
+            )
 
     existing_paymentmethods = api.get('/paymentmethods').json()
     existing_products = api.get('/products').json()
@@ -92,4 +93,4 @@ def load(data: Iterable[ParsingResult]):
         api.put_receipt(receipt)
     
     for line in lines:
-        api.put(f"/receipts/{line['receipt_id']}/lines/{line['linenumber']}", json=line)
+        api.put_receiptline(line)
