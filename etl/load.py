@@ -51,7 +51,7 @@ def load(data: Iterable[ParsingResult]):
             datetime=receipt.datetime,
             paymentmethod_id=receipt.paymentmethod,
             total=receipt.total,
-            reprint=receipt.total,
+            reprint=receipt.reprint,
             etag=d.etag,
             store_id=d.store_id
             )
