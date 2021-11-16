@@ -2,7 +2,7 @@
 
 import json
 
-from .common import Chain, Receipt, ParsingResult
+from .common import Chain, Receipt, ParsingResult, Store
 
 
 def transform(s3obj) -> ParsingResult:
@@ -17,11 +17,13 @@ def transform(s3obj) -> ParsingResult:
         datetime=data['transactionDateTime'],
     )
 
-    store_id = data['businessUnit']['id']
-    store_name = data['businessUnit']['name']
+    store = Store(
+        id=data['businessUnit']['id'],
+        name=data['businessUnit']['name']
+    )
 
     chainlessname = data['businessUnit']['chainlessName']
-    chain_name = store_name.replace(chainlessname, '').strip()
+    chain_name = store.name.replace(chainlessname, '').strip()
 
     chain = Chain(
         id=data['businessUnit']['chainId'],
@@ -30,8 +32,7 @@ def transform(s3obj) -> ParsingResult:
 
     return ParsingResult(
         receipt=receipt,
-        store_id=store_id,
-        store_name=store_name,
+        store=store,
         chain=chain,
         etag=s3obj.e_tag
     )

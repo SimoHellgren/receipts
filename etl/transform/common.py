@@ -35,12 +35,17 @@ class Chain:
 
 
 @dataclass
+class Store:
+    id: str
+    name: str
+
+
+@dataclass
 class ParsingResult:
     '''A contract / interface between the Transform and Load steps'''
     receipt: Receipt 
     chain: Chain
-    store_id: str
-    store_name: str
+    store: Store
     etag: str
 
 

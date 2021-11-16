@@ -1,7 +1,7 @@
 '''parse s group receipts'''
 import json
 
-from .common import Chain, Receipt, ParsingResult
+from .common import Chain, Receipt, ParsingResult, Store
 
 def transform(s3obj) -> ParsingResult:
     '''Transform an S3 ObjectSummary. Perhaps due a renaming and a typehint.'''
@@ -15,8 +15,10 @@ def transform(s3obj) -> ParsingResult:
         datetime=data['transaction']['transactionTimestamp'],
     )
     
-    store_id = data['store']['storeId']
-    store_name = data['store']['placeOfBusinessName']
+    store = Store(
+        id=data['store']['storeId'],
+        name=data['store']['placeOfBusinessName']
+    )
 
     chain = Chain(
         id=data['chain']['chainCode'],
@@ -25,8 +27,7 @@ def transform(s3obj) -> ParsingResult:
 
     return ParsingResult(
         receipt=receipt,
-        store_id=store_id,
-        store_name=store_name,
+        store=store,
         chain=chain,
         etag=s3obj.e_tag
     )
