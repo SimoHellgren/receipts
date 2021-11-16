@@ -41,8 +41,8 @@ def load(data: Iterable[ParsingResult]):
     lines = []
 
     for d in data:
-        chains[d.chain_id] = {'id': d.chain_id, 'name': d.chain_name}
-        stores[d.store_id] = {'id': d.store_id, 'name': d.store_id, 'chain_id': d.chain_id}
+        chains[d.chain.id] = {'id': d.chain.id, 'name': d.chain.name}
+        stores[d.store_id] = {'id': d.store_id, 'name': d.store_id, 'chain_id': d.chain.id}
         paymentmethods[d.receipt.paymentmethod] = {'id': d.receipt.paymentmethod, 'payer': None} 
 
         receipt = d.receipt

@@ -2,7 +2,7 @@
 
 import json
 
-from .common import Receipt, ParsingResult
+from .common import Chain, Receipt, ParsingResult
 
 
 def transform(s3obj) -> ParsingResult:
@@ -11,24 +11,27 @@ def transform(s3obj) -> ParsingResult:
     data = json.load(s3obj.get()['Body'])
 
     receipt = Receipt(
-        id = data['id'],
-        total = int(data['grandAmount'] * 100),
-        reprint = data['receiptReprint'],
-        datetime = data['transactionDateTime'],
+        id=data['id'],
+        total=int(data['grandAmount'] * 100),
+        reprint=data['receiptReprint'],
+        datetime=data['transactionDateTime'],
     )
 
     store_id = data['businessUnit']['id']
     store_name = data['businessUnit']['name']
 
-    chain_id = data['businessUnit']['chainId']
     chainlessname = data['businessUnit']['chainlessName']
     chain_name = store_name.replace(chainlessname, '').strip()
+
+    chain = Chain(
+        id=data['businessUnit']['chainId'],
+        name=chain_name
+    )
 
     return ParsingResult(
         receipt=receipt,
         store_id=store_id,
         store_name=store_name,
-        chain_id=chain_id,
-        chain_name=chain_name,
+        chain=chain,
         etag=s3obj.e_tag
     )

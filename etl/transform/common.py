@@ -29,11 +29,16 @@ class Receipt:
 
 
 @dataclass
+class Chain:
+    id: str
+    name: str
+
+
+@dataclass
 class ParsingResult:
     '''A contract / interface between the Transform and Load steps'''
     receipt: Receipt 
-    chain_id: str
-    chain_name: str
+    chain: Chain
     store_id: str
     store_name: str
     etag: str
